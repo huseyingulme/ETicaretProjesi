@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using ETicaret.Utils;
 using ETicaret.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ETicaret.Core.Services;
+using ETicaret.Core.Interfaces;
+using ETicaret.Data.Repositories;
+using ETicaret.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,18 @@ builder.Services.AddScoped<FileHelper>();
 builder.Services.AddScoped<ETicaret.Services.ICartService, ETicaret.Services.CartService>();
 builder.Services.AddScoped<ETicaret.Services.IAddressService, ETicaret.Services.AddressService>();
 builder.Services.AddScoped<ETicaret.Services.IOrderService, ETicaret.Services.OrderService>();
+
+// Repository Pattern
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// Business Services
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+// Memory Cache
+builder.Services.AddMemoryCache();
 builder.Services.AddAntiforgery(options =>
 {
     options.HeaderName = "X-CSRF-TOKEN";

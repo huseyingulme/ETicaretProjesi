@@ -1,58 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\husey\\Desktop\\ETicaret\\",
+  "WorkspaceRootPath": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{88064523-DCFB-41C6-8885-E73181ED7781}|..\\ETicaret.Core\\ETicaret.Core.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret.core\\validators\\productvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\orders\\statistics.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\orders\\statistics.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\services\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:services\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\models\\cartviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:models\\cartviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\main\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\main\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\shared\\_solmenu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\shared\\_solmenu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\orders\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\orders\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\orders\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\orders\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\orders\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\orders\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaret\\areas\\admin\\views\\orders\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:areas\\admin\\views\\orders\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret\\controllers\\api\\productapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:controllers\\api\\productapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,7 +21,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 125,
-          "SelectedChildIndex": 18,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -90,171 +49,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OrderService.cs",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Services\\OrderService.cs",
-              "RelativeDocumentMoniker": "Services\\OrderService.cs",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Services\\OrderService.cs",
-              "RelativeToolTip": "Services\\OrderService.cs",
-              "ViewState": "AgIAADABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "ProductValidator.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "RelativeDocumentMoniker": "..\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "RelativeToolTip": "..\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-26T11:20:42.357Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IOrderService.cs",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Services\\IOrderService.cs",
-              "RelativeDocumentMoniker": "Services\\IOrderService.cs",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Services\\IOrderService.cs",
-              "RelativeToolTip": "Services\\IOrderService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-26T11:20:41.403Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CartViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Models\\CartViewModel.cs",
-              "RelativeDocumentMoniker": "Models\\CartViewModel.cs",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Models\\CartViewModel.cs",
-              "RelativeToolTip": "Models\\CartViewModel.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-26T11:20:35.996Z",
+              "WhenOpened": "2025-08-26T13:43:38.909Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Statistics.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Statistics.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Orders\\Statistics.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Statistics.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Orders\\Statistics.cshtml",
-              "ViewState": "AgIAAGQAAAAAAAAAAAAAAOoAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:20:00.928Z",
+              "Title": "AddressController.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\AddressController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AddressController.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\AddressController.cs",
+              "RelativeToolTip": "Controllers\\AddressController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T13:43:10.345Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "OrderController.cs",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Controllers\\OrderController.cs",
-              "RelativeDocumentMoniker": "Controllers\\OrderController.cs",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Controllers\\OrderController.cs",
-              "RelativeToolTip": "Controllers\\OrderController.cs",
+              "DocumentIndex": 2,
+              "Title": "ProductApiController.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\Api\\ProductApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\ProductApiController.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\Api\\ProductApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\ProductApiController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-26T11:19:18.395Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "_SolMenu.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Shared\\_SolMenu.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\_SolMenu.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Shared\\_SolMenu.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\_SolMenu.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:18:57.585Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Main\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Main\\Index.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Main\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Main\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMsAAABVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:18:46.558Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:18:43.402Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Details.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Orders\\Details.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Details.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Orders\\Details.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:07:04.839Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Orders\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Edit.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Orders\\Edit.cshtml",
-              "ViewState": "AgIAANMAAAAAAAAAAAAwwNsAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:07:03.551Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Orders\\Index.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Orders\\Index.cshtml",
-              "ViewState": "AgIAABIBAAAAAAAAAAAQwEMBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:06:54.511Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Delete.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Orders\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Views\\Orders\\Delete.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Orders\\Delete.cshtml",
-              "ViewState": "AgIAANsAAAAAAAAAAAAQwAwBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-26T11:06:49.64Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OrdersController.cs",
-              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Controllers\\OrdersController.cs",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\OrdersController.cs",
-              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaret\\Areas\\Admin\\Controllers\\OrdersController.cs",
-              "RelativeToolTip": "Areas\\Admin\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAKsAAAAAAAAAAAAAALUAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-26T11:05:59.185Z",
+              "WhenOpened": "2025-08-26T13:43:02.285Z",
               "EditorCaption": ""
             }
           ]

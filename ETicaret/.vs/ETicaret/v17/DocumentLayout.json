@@ -1,7 +1,19 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\husey\\Desktop\\ETicaret\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{88064523-DCFB-41C6-8885-E73181ED7781}|..\\ETicaret.Core\\ETicaret.Core.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret.core\\validators\\productvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|c:\\users\\husey\\desktop\\eticaretprojesi\\eticaret\\controllers\\api\\productapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A28F97E-D644-4DFC-BCD5-0969289B5BC5}|ETicaret.csproj|solutionrelative:controllers\\api\\productapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +21,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 125,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,6 +46,45 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductValidator.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "RelativeDocumentMoniker": "..\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "RelativeToolTip": "..\\ETicaret.Core\\Validators\\ProductValidator.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T13:43:38.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AddressController.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\AddressController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AddressController.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\AddressController.cs",
+              "RelativeToolTip": "Controllers\\AddressController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T13:43:10.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProductApiController.cs",
+              "DocumentMoniker": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\Api\\ProductApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\ProductApiController.cs",
+              "ToolTip": "C:\\Users\\husey\\Desktop\\ETicaretProjesi\\ETicaret\\Controllers\\Api\\ProductApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\ProductApiController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T13:43:02.285Z",
+              "EditorCaption": ""
             }
           ]
         }

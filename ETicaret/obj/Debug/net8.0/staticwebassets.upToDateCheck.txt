@@ -84,9 +84,7 @@ wwwroot\Img\Sliders\aaaaaaaaa_20250814160608.jpeg
 wwwroot\Img\Sliders\aaaaaaaaaaa_20250814153151.jpeg
 wwwroot\Img\Sliders\aaaaaaaaaaa_20250814153211.png
 wwwroot\Img\Sliders\KAMPANYA_20250818163553.png
-wwwroot\Img\Sliders\KAMPANYA_20250826112340.png
 wwwroot\Img\WhatsApp Görsel 2025-06-11 saat 22.15.14_361fcb10.jpg
-wwwroot\index.html
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

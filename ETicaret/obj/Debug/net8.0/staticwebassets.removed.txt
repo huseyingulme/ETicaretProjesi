@@ -1,2 +1,2 @@
-C:\Users\husey\Desktop\ETicaret\wwwroot\Img\Sliders\KAMPANYA_20250826112340.png
-C:\Users\husey\Desktop\ETicaret\wwwroot\index.html
+C:\Users\husey\Desktop\ETicaretProjesi\ETicaret\wwwroot\Img\Sliders\KAMPANYA_20250826112340.png
+C:\Users\husey\Desktop\ETicaretProjesi\ETicaret\wwwroot\index.html

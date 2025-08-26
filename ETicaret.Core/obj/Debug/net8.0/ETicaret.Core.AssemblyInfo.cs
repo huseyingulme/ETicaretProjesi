@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ETicaret.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d897b9bb577f1837a42bf00d5fa8b5a53d769c56")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fccdf9ac876a3a8b4a67b5b1262dd2feea568ee0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ETicaret.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ETicaret.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
