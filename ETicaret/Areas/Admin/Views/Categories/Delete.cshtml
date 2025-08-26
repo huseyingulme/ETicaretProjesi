@@ -1,0 +1,124 @@
+﻿@model ETicaret.Core.Entities.Category
+
+@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-trash me-3"></i>Kategori Sil
+    </h1>
+    <p class="management-subtitle">@Model.Name kategorisini silmek istediğinizden emin misiniz?</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="management-form">
+            <div class="alert alert-warning" role="alert">
+                <h6 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Dikkat!
+                </h6>
+                <p class="mb-0">
+                    Bu kategoriyi sildiğinizde, kategoriye ait tüm ürünler de etkilenecektir. 
+                    Bu işlem geri alınamaz.
+                </p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Kategori Adı</label>
+                        <p class="form-control-plaintext">@Model.Name</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Durum</label>
+                        <p class="form-control-plaintext">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pasif</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label fw-bold">Açıklama</label>
+                <p class="form-control-plaintext">
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        @Model.Description
+                    }
+                    else
+                    {
+                        <span class="text-muted">Açıklama yok</span>
+                    }
+                </p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Üst Menüde Göster</label>
+                        <p class="form-control-plaintext">
+                            @if (Model.IsTopMenu)
+                            {
+                                <span class="badge bg-primary">Evet</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-light text-dark">Hayır</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Sıra No</label>
+                        <p class="form-control-plaintext">
+                            <span class="badge bg-secondary">@Model.OrderNo</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label fw-bold">Üst Kategori</label>
+                <p class="form-control-plaintext">
+                    @if (Model.ParentId.HasValue)
+                    {
+                        <span class="text-muted">Üst kategori ID: @Model.ParentId.Value</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info">Ana Kategori</span>
+                    }
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label fw-bold">Oluşturulma Tarihi</label>
+                <p class="form-control-plaintext">@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</p>
+            </div>
+            
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Kategoriyi Sil
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Geri Dön
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

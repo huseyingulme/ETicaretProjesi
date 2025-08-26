@@ -1,0 +1,391 @@
+@model ETicaret.Core.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050;" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Hero Slider -->
+@if (Model.Sliders.Any())
+{
+    <section class="hero-section">
+        <div id="heroSlider" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                @for (int i = 0; i < Model.Sliders.Count; i++)
+                {
+                    <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="@i" 
+                            class="@(i == 0 ? "active" : "")"></button>
+                }
+            </div>
+            
+            <div class="carousel-inner">
+                @foreach (var slider in Model.Sliders)
+                {
+                    <div class="carousel-item @(Model.Sliders.IndexOf(slider) == 0 ? "active" : "")">
+                        <div class="hero-slide" style="background-image: url('/Img/Sliders/@slider.Image')">
+                            <div class="hero-content">
+                                <div class="container">
+                                    <div class="hero-text">
+                                        <h1>@slider.Title</h1>
+                                        @if (!string.IsNullOrEmpty(slider.Description))
+                                        {
+                                            <p>@slider.Description</p>
+                                        }
+                                        <div class="hero-buttons">
+                                            <a href="#products" class="btn btn-primary">Ürünleri Keşfet</a>
+                                            <a href="#categories" class="btn btn-outline">Kategoriler</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+}
+
+<!-- Search Section -->
+<section class="search-section">
+    <div class="container">
+        <div class="search-container text-center">
+            <h2>Ne Arıyorsunuz?</h2>
+            <p>Oyuncak, kategori veya marka adı yazarak hızlıca arama yapın</p>
+            <div class="search-form">
+                <form id="searchForm" method="get" action="/Home/Search">
+                    <div class="input-group">
+                        <input type="text" name="q" id="searchInput" class="form-control" placeholder="Örn: Lego, Barbie, Puzzle..." required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+@if (Model.Categories.Any())
+{
+    <section id="categories" class="categories-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Kategoriler</h2>
+                <p>Yaş gruplarına ve ilgi alanlarına göre düzenlenmiş oyuncak kategorileri</p>
+            </div>
+            
+            <div class="categories-slider">
+                <div class="categories-track">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <h3>@category.Name</h3>
+                            <a asp-action="CategoryProducts" asp-controller="Home" asp-route-id="@category.Id" 
+                               class="category-link">Ürünleri Gör</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Featured Products Section -->
+@if (Model.HomeProducts.Any())
+{
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Öne Çıkan Ürünler</h2>
+                <p>En popüler ve en çok tercih edilen oyuncaklar</p>
+            </div>
+
+            <!-- Products Info -->
+            <div class="products-info">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">@ViewBag.TotalProducts ürün bulundu</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="mb-0">Sayfa @ViewBag.CurrentPage / @ViewBag.TotalPages</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="products-grid">
+                @foreach (var product in Model.HomeProducts)
+                {
+                    <div class="product-card">
+                        <div class="product-image">
+                            <a href="/Home/ProductDetail/@product.Id">
+                                <img src="~/Img/Products/@product.Image" alt="@product.Name">
+                            </a>
+                            @if (product.Stock <= 0)
+                            {
+                                <div class="product-badge">Stokta Yok</div>
+                            }
+
+                        </div>
+                        
+                        <div class="product-content">
+                            <div class="product-category">
+                                @if (product.Category != null)
+                                {
+                                    @product.Category.Name
+                                }
+                            </div>
+                            <h3><a href="/Home/ProductDetail/@product.Id">@product.Name</a></h3>
+                            <div class="product-price">
+                                <span>@product.Price.ToString("F2") ₺</span>
+                            </div>
+                            <div class="product-actions mt-3">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(product.Id))
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn-active" onclick="removeFromFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="fas fa-heart me-2"></i>Favorilerden Çıkar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn" onclick="addToFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="far fa-heart me-2"></i>Favorilere Ekle
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary btn-sm w-100" onclick="addToCart(@product.Id)">
+                                            <i class="fas fa-shopping-cart me-2"></i>Sepete Ekle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (ViewBag.TotalPages > 1)
+            {
+                <div class="pagination-wrapper">
+                    <nav aria-label="Sayfa navigasyonu">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                </li>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+
+
+<!-- Brands Section -->
+@if (Model.Brands.Any())
+{
+    <section class="brands-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Markalar</h2>
+                <p>Dünya çapında tanınan güvenilir oyuncak markaları</p>
+            </div>
+            
+            <div class="brands-slider">
+                <div class="brands-track">
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <div class="brand-card">
+                            @if (!string.IsNullOrEmpty(brand.Logo))
+                            {
+                                <img src="~/Img/Brands/@brand.Logo" alt="@brand.Name" class="brand-logo">
+                            }
+                            else
+                            {
+                                <div class="brand-placeholder">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                            }
+                            <h4>@brand.Name</h4>
+                            <a asp-action="BrandProducts" asp-controller="Home" asp-route-id="@brand.Id" 
+                               class="brand-link">Ürünleri Gör</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            // Hızlı sepet ekleme
+            const addToCartBtn = event.target.closest('button');
+            const originalText = addToCartBtn.innerHTML;
+            
+            // Loading durumu
+            addToCartBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Ekleniyor...';
+            addToCartBtn.disabled = true;
+
+            // AJAX ile sepete ekle
+            fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                body: JSON.stringify({
+                    ProductId: productId,
+                    Quantity: 1,
+                    ReturnUrl: window.location.href
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Ürün sepete eklendi!', 'success');
+                    updateCartCount();
+                } else {
+                    showNotification(data.message || 'Bir hata oluştu.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            })
+            .finally(() => {
+                // Buton durumunu geri yükle
+                addToCartBtn.innerHTML = originalText;
+                addToCartBtn.disabled = false;
+            });
+        }
+
+        function showNotification(message, type) {
+            // Toast notification oluştur
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Animasyon ile göster
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // 3 saniye sonra kaldır
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function updateCartCount() {
+            fetch('/Cart/GetCartCount')
+            .then(response => response.json())
+            .then(data => {
+                // Header'daki sepet sayısını güncelle
+                const cartCountElement = document.querySelector('.cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = data.count;
+                    cartCountElement.style.display = data.count > 0 ? 'inline' : 'none';
+                }
+            })
+            .catch(error => console.error('Error updating cart count:', error));
+        }
+    </script>
+}
+
+<style>
+    .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        padding: 16px 20px;
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        border-left: 4px solid;
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.toast-success {
+        border-left-color: #28a745;
+    }
+    
+    .toast-notification.toast-error {
+        border-left-color: #dc3545;
+    }
+    
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .toast-content i {
+        font-size: 18px;
+    }
+    
+    .toast-success .toast-content i {
+        color: #28a745;
+    }
+    
+    .toast-error .toast-content i {
+        color: #dc3545;
+    }
+</style>

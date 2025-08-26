@@ -1,0 +1,127 @@
+﻿@model IEnumerable<ETicaret.Core.Entities.Brand>
+
+@{
+    ViewData["Title"] = "Marka Yönetimi";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-tags me-3"></i>Marka Yönetimi
+    </h1>
+    <p class="management-subtitle">Sitenizdeki markaları yönetin, logolarını düzenleyin ve organize edin</p>
+    
+    <div class="management-stats">
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count()</span>
+            <span class="stat-label">Toplam Marka</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(b => b.IsActive)</span>
+            <span class="stat-label">Aktif Marka</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(b => !string.IsNullOrEmpty(b.Logo))</span>
+            <span class="stat-label">Logolu Marka</span>
+        </div>
+    </div>
+</div>
+
+<div class="action-buttons">
+    <a asp-action="Create" class="btn-create">
+        <i class="fas fa-plus"></i>
+        Yeni Marka Ekle
+    </a>
+</div>
+
+<div class="management-table">
+    <table class="table" id="brandsTable">
+        <thead>
+            <tr>
+                <th>Marka Bilgileri</th>
+                <th>Logo</th>
+                <th>Açıklama</th>
+                <th>Durum</th>
+                <th>Sıra</th>
+                <th>Oluşturma Tarihi</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="entity-header">
+                            <div class="entity-icon">
+                                <i class="fas fa-tag"></i>
+                            </div>
+                            <div>
+                                <h6 class="entity-title">@item.Name</h6>
+                                <small class="text-muted">ID: @item.Id</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Logo))
+                        {
+                            <img src="/Img/Brands/@item.Logo" alt="@item.Name" class="image-thumbnail" />
+                        }
+                        else
+                        {
+                            <div class="image-thumbnail bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <div class="entity-description">
+                                @(item.Description.Length > 80 ? item.Description.Substring(0, 80) + "..." : item.Description)
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Açıklama yok</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="status-badge status-active">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-inactive">Pasif</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="badge bg-secondary">@item.OrderNo</span>
+                    </td>
+                    <td>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar meta-icon"></i>
+                            <span>@(item.CreateDate.ToString("dd.MM.yyyy"))</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>
+                                Düzenle
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details">
+                                <i class="fas fa-eye"></i>
+                                Detay
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">
+                                <i class="fas fa-trash"></i>
+                                Sil
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

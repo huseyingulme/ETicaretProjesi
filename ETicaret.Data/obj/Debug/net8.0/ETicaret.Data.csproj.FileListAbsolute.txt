@@ -1,0 +1,17 @@
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Data.deps.json
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Data.runtimeconfig.json
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Data.dll
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Data.pdb
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Core.dll
+C:\Users\husey\Desktop\ETicaret.Data\bin\Debug\net8.0\ETicaret.Core.pdb
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.csproj.AssemblyReference.cache
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.AssemblyInfoInputs.cache
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.AssemblyInfo.cs
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.csproj.CoreCompileInputs.cache
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.6F63C9D7.Up2Date
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.dll
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\refint\ETicaret.Data.dll
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.pdb
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ETicaret.Data.genruntimeconfig.cache
+C:\Users\husey\Desktop\ETicaret.Data\obj\Debug\net8.0\ref\ETicaret.Data.dll

@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ETicaret.Core.Entities.Slider>
+
+@{
+    ViewData["Title"] = "Slider Yönetimi";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-images me-3"></i>Slider Yönetimi
+    </h1>
+    <p class="management-subtitle">Ana sayfa slider görsellerini yönetin ve düzenleyin</p>
+    
+    <div class="management-stats">
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count()</span>
+            <span class="stat-label">Toplam Slider</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(s => s.IsActive)</span>
+            <span class="stat-label">Aktif Slider</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(s => !string.IsNullOrEmpty(s.Link))</span>
+            <span class="stat-label">Linkli Slider</span>
+        </div>
+    </div>
+</div>
+
+<div class="action-buttons">
+    <a asp-action="Create" class="btn-create">
+        <i class="fas fa-plus"></i>
+        Yeni Slider Ekle
+    </a>
+   
+</div>
+
+<div class="management-table">
+    <table class="table" id="slidersTable">
+        <thead>
+            <tr>
+                <th>Slider Bilgileri</th>
+                <th>Görsel</th>
+                <th>Link</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <div class="entity-header">
+                            <div class="entity-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div>
+                                <h6 class="entity-title">@item.Title</h6>
+                                @if (!string.IsNullOrEmpty(item.Description))
+                                {
+                                    <p class="entity-description">@item.Description</p>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="/Img/Sliders/@item.Image" alt="@item.Title" class="image-thumbnail" />
+                        }
+                        else
+                        {
+                            <div class="image-thumbnail bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Link))
+                        {
+                            <a href="@item.Link" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                                Linki Aç
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Link yok</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="status-badge status-active">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-inactive">Pasif</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>
+                                Düzenle
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details">
+                                <i class="fas fa-eye"></i>
+                                Detay
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">
+                                <i class="fas fa-trash"></i>
+                                Sil
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

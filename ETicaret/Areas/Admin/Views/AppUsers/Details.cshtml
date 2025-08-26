@@ -1,0 +1,137 @@
+﻿@model ETicaret.Core.Entities.AppUser
+
+@{
+    ViewData["Title"] = "Kullanıcı Detayları";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Kullanıcı Detayları
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Ad:</label>
+                            <p class="form-control-plaintext">@Model.Name</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Soyad:</label>
+                            <p class="form-control-plaintext">@Model.SurName</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">E-posta:</label>
+                            <p class="form-control-plaintext">
+                                <a href="mailto:@Model.Email">@Model.Email</a>
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Telefon:</label>
+                            <p class="form-control-plaintext">
+                                @if (!string.IsNullOrEmpty(Model.Phone))
+                                {
+                                    <a href="tel:@Model.Phone">@Model.Phone</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Belirtilmemiş</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Kullanıcı Adı:</label>
+                            <p class="form-control-plaintext">
+                                @if (!string.IsNullOrEmpty(Model.UserName))
+                                {
+                                    @Model.UserName
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Belirtilmemiş</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Kullanıcı ID:</label>
+                            <p class="form-control-plaintext">@Model.Id</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Durum:</label>
+                            <p class="form-control-plaintext">
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Yetki:</label>
+                            <p class="form-control-plaintext">
+                                @if (Model.IsAdmin)
+                                {
+                                    <span class="badge bg-warning">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Kullanıcı</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Silinebilir:</label>
+                            <p class="form-control-plaintext">
+                                @if (Model.IsDeletable)
+                                {
+                                    <span class="badge bg-success">Evet</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Hayır</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Oluşturulma Tarihi:</label>
+                            <p class="form-control-plaintext">@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">GUID:</label>
+                            <p class="form-control-plaintext">
+                                <small class="text-muted">@Model.UserGuid</small>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit me-2"></i>Düzenle
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Geri Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

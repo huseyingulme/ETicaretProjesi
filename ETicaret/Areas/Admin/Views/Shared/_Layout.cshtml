@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Toyz Shop Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admin/css/admin-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Top Navigation Bar -->
+    <nav class="admin-topbar">
+        <div class="d-flex align-items-center justify-content-between w-100">
+            <!-- Left Side -->
+            <div class="d-flex align-items-center">
+                <button class="sidebar-toggle me-3" id="sidebarToggle" title="Menüyü Daralt/Genişlet">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-brand d-flex align-items-center">
+                    <div class="brand-icon me-2">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-title">Toyz Shop</div>
+                        <div class="brand-subtitle">Admin Panel</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center - Search -->
+            <div class="search-form d-none d-lg-block">
+                <div class="input-group">
+                    <input type="text" class="form-control search-input" placeholder="Ara...">
+                    <button class="btn search-btn" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Side -->
+            <div class="d-flex align-items-center">
+                <!-- Notifications -->
+                <div class="dropdown me-3">
+                    <button class="btn notification-icon" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span>
+                    </button>
+                    
+                </div>
+                
+                <!-- User Menu -->
+                <div class="dropdown">
+                    <button class="btn d-flex align-items-center text-white" type="button" data-bs-toggle="dropdown">
+                        <div class="user-avatar me-2">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info d-none d-md-block">
+                            <div class="user-name">@(User.Identity?.Name ?? "Kullanıcı")</div>
+                            <div class="user-role">@(User.IsInRole("Admin") ? "Yönetici" : "Kullanıcı")</div>
+                        </div>
+                        <i class="fas fa-chevron-down ms-2"></i>
+                    </button>
+                    <div class="dropdown-menu user-dropdown">
+                        <a class="dropdown-item" href="/Account/Profile">
+                            <i class="fas fa-user me-2"></i>Profil
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cog me-2"></i>Ayarlar
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/Account/Logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>Çıkış
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                <span>Dashboard</span>
+            </div>
+            <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Menüyü Daralt/Genişlet">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Main" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-text">Ana Sayfa</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="AppUsers" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="nav-text">Kullanıcılar</span>
+                        <span class="nav-badge">89</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Brands" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <span class="nav-text">Markalar</span>
+                        <span class="nav-badge">12</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Categories" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <span class="nav-text">Kategoriler</span>
+                        <span class="nav-badge">8</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Products" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <span class="nav-text">Ürünler</span>
+                        <span class="nav-badge">156</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Orders" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span class="nav-text">Siparişler</span>
+                        <span class="nav-badge">23</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Sliders" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <span class="nav-text">Duyuru ve Kampanya</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <span class="nav-text">Haber Yönetimi</span>
+                        <span class="nav-badge">12</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Contacts" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <span class="nav-text">İletişim Mesajları</span>
+                        <span class="nav-badge">7</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Reports" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <span class="nav-text">Raporlar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Settings" asp-action="Index">
+                        <div class="nav-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <span class="nav-text">Ayarlar</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-container" id="adminContainer">
+        <div class="main-content">
+            <div class="content-wrapper">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/admin/js/admin.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

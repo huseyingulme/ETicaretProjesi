@@ -1,0 +1,336 @@
+@model List<ETicaret.Core.Entities.Product>
+@{
+    ViewData["Title"] = "Arama Sonuçları";
+}
+
+<div class="search-results-page">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Arama Sonuçları</h1>
+            <p>"@ViewBag.SearchQuery" için @ViewBag.TotalProducts sonuç bulundu</p>
+        </div>
+
+        <!-- Search Results -->
+        @if (Model.Any())
+        {
+            <div class="search-info">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">@ViewBag.TotalProducts ürün bulundu</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="mb-0">Sayfa @ViewBag.CurrentPage / @ViewBag.TotalPages</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="products-grid">
+                @foreach (var product in Model)
+                {
+                    <div class="product-card">
+                        <div class="product-image">
+                            <a href="/Home/ProductDetail/@product.Id">
+                                <img src="~/Img/Products/@product.Image" alt="@product.Name">
+                            </a>
+                            @if (product.Stock <= 0)
+                            {
+                                <div class="product-badge">Stokta Yok</div>
+                            }
+
+                        </div>
+                        
+                        <div class="product-content">
+                            <div class="product-category">
+                                @if (product.Category != null)
+                                {
+                                    @product.Category.Name
+                                }
+                            </div>
+                            <h3><a href="/Home/ProductDetail/@product.Id">@product.Name</a></h3>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span>(24)</span>
+                            </div>
+                            <div class="product-price">
+                                <span>@product.Price.ToString("F2") ₺</span>
+                            </div>
+                            <div class="product-actions mt-3">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(product.Id))
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn-active" onclick="removeFromFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="fas fa-heart me-2"></i>Favorilerden Çıkar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn" onclick="addToFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="far fa-heart me-2"></i>Favorilere Ekle
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary btn-sm w-100" onclick="addToCart(@product.Id)">
+                                            <i class="fas fa-shopping-cart me-2"></i>Sepete Ekle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (ViewBag.TotalPages > 1)
+            {
+                <div class="pagination-wrapper">
+                    <nav aria-label="Sayfa navigasyonu">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Search", new { q = ViewBag.SearchQuery, page = ViewBag.CurrentPage - 1 })">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Search", new { q = ViewBag.SearchQuery, page = i })">@i</a>
+                                </li>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Search", new { q = ViewBag.SearchQuery, page = ViewBag.CurrentPage + 1 })">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>"@ViewBag.SearchQuery" için sonuç bulunamadı</h3>
+                <p>Arama kriterlerinizi değiştirmeyi deneyin veya ana sayfaya dönün.</p>
+                <a href="/" class="btn btn-primary">Ana Sayfaya Dön</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            // Sepete ekleme işlemi burada yapılacak
+            showNotification('Ürün sepete eklendi!', 'success');
+        }
+
+        // Get anti-forgery token
+        async function getAntiForgeryToken() {
+            try {
+                const response = await fetch('/Favorites/GetAntiForgeryToken');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Anti-forgery token alınırken hata oluştu:', error);
+                return null;
+            }
+        }
+
+        // Favori ekleme fonksiyonu
+        async function addToFavorites(productId) {
+            try {
+                // Anti-forgery token al
+                const tokenData = await getAntiForgeryToken();
+                if (!tokenData) {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Güvenlik token\'ı alınamadı. Lütfen sayfayı yenileyin.', 'error');
+                    } else {
+                        alert('Güvenlik token\'ı alınamadı. Lütfen sayfayı yenileyin.');
+                    }
+                    return;
+                }
+
+                // Buton durumunu güncelle (loading)
+                const button = document.querySelector(`[data-product-id="${productId}"]`);
+                if (button) {
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Ekleniyor...';
+                }
+
+                const response = await fetch(`/Favorites/Add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        [tokenData.headerName]: tokenData.token
+                    },
+                    body: `productId=${productId}`
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Buton durumunu güncelle
+                    if (button) {
+                        button.disabled = false;
+                        button.classList.remove('favorite-btn');
+                        button.classList.add('favorite-btn-active');
+                        button.innerHTML = '<i class="fas fa-heart me-2"></i>Favorilerden Çıkar';
+                        button.onclick = () => removeFromFavorites(productId);
+                    }
+                    
+                    // Favori sayısını güncelle
+                    if (typeof updateFavoriteCount === 'function') {
+                        updateFavoriteCount();
+                    }
+                    
+                    // Başarı mesajı göster
+                    if (typeof showNotification === 'function') {
+                        showNotification(data.message, 'success');
+                    } else {
+                        alert(data.message);
+                    }
+                } else {
+                    // Hata durumunda butonu eski haline getir
+                    if (button) {
+                        button.disabled = false;
+                        button.innerHTML = '<i class="far fa-heart me-2"></i>Favorilere Ekle';
+                    }
+                    
+                    if (typeof showNotification === 'function') {
+                        showNotification(data.message, 'error');
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Favori eklenirken hata oluştu:', error);
+                
+                // Hata durumunda butonu eski haline getir
+                const button = document.querySelector(`[data-product-id="${productId}"]`);
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = '<i class="far fa-heart me-2"></i>Favorilere Ekle';
+                }
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('Favori eklenirken bir hata oluştu! Lütfen tekrar deneyin.', 'error');
+                } else {
+                    alert('Favori eklenirken bir hata oluştu! Lütfen tekrar deneyin.');
+                }
+            }
+        }
+
+        // Favori çıkarma fonksiyonu
+        async function removeFromFavorites(productId) {
+            try {
+                // Anti-forgery token al
+                const tokenData = await getAntiForgeryToken();
+                if (!tokenData) {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Güvenlik token\'ı alınamadı. Lütfen sayfayı yenileyin.', 'error');
+                    } else {
+                        alert('Güvenlik token\'ı alınamadı. Lütfen sayfayı yenileyin.');
+                    }
+                    return;
+                }
+
+                // Buton durumunu güncelle (loading)
+                const button = document.querySelector(`[data-product-id="${productId}"]`);
+                if (button) {
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Kaldırılıyor...';
+                }
+
+                const response = await fetch(`/Favorites/Remove`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        [tokenData.headerName]: tokenData.token
+                    },
+                    body: `productId=${productId}`
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Buton durumunu güncelle
+                    if (button) {
+                        button.disabled = false;
+                        button.classList.remove('favorite-btn-active');
+                        button.classList.add('favorite-btn');
+                        button.innerHTML = '<i class="far fa-heart me-2"></i>Favorilere Ekle';
+                        button.onclick = () => addToFavorites(productId);
+                    }
+                    
+                    // Favori sayısını güncelle
+                    if (typeof updateFavoriteCount === 'function') {
+                        updateFavoriteCount();
+                    }
+                    
+                    // Başarı mesajı göster
+                    if (typeof showNotification === 'function') {
+                        showNotification(data.message, 'success');
+                    } else {
+                        alert(data.message);
+                    }
+                } else {
+                    // Hata durumunda butonu eski haline getir
+                    if (button) {
+                        button.disabled = false;
+                        button.innerHTML = '<i class="fas fa-heart me-2"></i>Favorilerden Çıkar';
+                    }
+                    
+                    if (typeof showNotification === 'function') {
+                        showNotification(data.message, 'error');
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Favori kaldırılırken hata oluştu:', error);
+                
+                // Hata durumunda butonu eski haline getir
+                const button = document.querySelector(`[data-product-id="${productId}"]`);
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = '<i class="fas fa-heart me-2"></i>Favorilerden Çıkar';
+                }
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('Favori kaldırılırken bir hata oluştu! Lütfen tekrar deneyin.', 'error');
+                } else {
+                    alert('Favori kaldırılırken bir hata oluştu! Lütfen tekrar deneyin.');
+                }
+            }
+        }
+    </script>
+}

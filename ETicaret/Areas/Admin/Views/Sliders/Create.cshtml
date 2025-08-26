@@ -1,0 +1,251 @@
+﻿@model ETicaret.Core.Entities.Slider
+
+@{
+    ViewData["Title"] = "Yeni Slider Ekle";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-plus me-3"></i>Yeni Slider Ekle
+    </h1>
+    <p class="management-subtitle">Ana sayfa için yeni slider görseli ekleyin</p>
+</div>
+
+<form asp-action="Create" enctype="multipart/form-data" id="sliderForm">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="management-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Başlık</label>
+                    <input asp-for="Title" class="form-control" placeholder="Slider başlığını girin" required />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Slider açıklamasını girin"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="Link" class="form-label">Link</label>
+                    <input asp-for="Link" class="form-control" placeholder="https://example.com" />
+                    <span asp-validation-for="Link" class="text-danger"></span>
+                    <small class="form-text text-muted">İsteğe bağlı - Slider'a tıklandığında yönlendirilecek link</small>
+                </div>
+                
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" asp-for="IsActive" checked />
+                    <label class="form-check-label" asp-for="IsActive">Aktif</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="image-upload-container">
+                <h5 class="mb-3">
+                    <i class="fas fa-image me-2"></i>Slider Görseli
+                </h5>
+                
+                <div class="image-upload-area" id="uploadZone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        <span class="upload-title">Görsel Yükle</span>
+                        <span class="upload-subtitle">Sürükle & Bırak veya Tıkla</span>
+                    </div>
+                    <input name="Image" id="Image" class="form-control d-none" type="file" accept="image/*" required />
+                </div>
+                
+                <!-- Image Preview -->
+                <div id="imagePreview" class="image-preview mt-3" style="display: none;">
+                    <div class="preview-header">
+                        <span class="preview-title">Önizleme</span>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearImagePreview()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <img id="previewImg" src="" alt="Slider görseli önizleme" class="preview-img" />
+                    <div class="preview-info">
+                        <div class="file-name" id="fileName"></div>
+                        <div class="file-size" id="fileSize"></div>
+                    </div>
+                </div>
+                
+                <!-- File Info -->
+                <div class="file-info mt-3">
+                    <div class="info-item">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Desteklenen formatlar: JPG, PNG, GIF, WebP
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        Maksimum dosya boyutu: 5MB
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Önerilen boyut: 1920x600 piksel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-actions mt-4">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Slider Oluştur
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Geri Dön
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Initialize drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initDragAndDrop();
+            initFormValidation();
+        });
+        
+        function initFormValidation() {
+            const form = document.getElementById('sliderForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Form submit ediliyor...');
+                    
+                    // Form validation
+                    const title = document.querySelector('input[name="Title"]').value;
+                    const image = document.querySelector('input[name="Image"]').files[0];
+                    
+                    if (!title || title.trim() === '') {
+                        e.preventDefault();
+                        showAlert('Lütfen başlık girin!', 'danger');
+                        return false;
+                    }
+                    
+                    if (!image) {
+                        e.preventDefault();
+                        showAlert('Lütfen bir görsel seçin!', 'danger');
+                        return false;
+                    }
+                    
+                    console.log('Form validation başarılı, submit ediliyor...');
+                    return true;
+                });
+            }
+        }
+        
+        function initDragAndDrop() {
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('Image');
+            
+            if (!uploadZone || !fileInput) return;
+            
+            // Drag and drop events
+            uploadZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            });
+            
+            uploadZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+            });
+            
+            uploadZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleFileSelect(files[0]);
+                }
+            });
+            
+            // Click to upload
+            uploadZone.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // File input change
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+        }
+        
+        function handleFileSelect(file) {
+            // File validation
+            if (!file.type.match('image.*')) {
+                showAlert('Lütfen sadece resim dosyası seçin!', 'danger');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showAlert('Dosya boyutu 5MB\'dan büyük olamaz!', 'danger');
+                return;
+            }
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = formatFileSize(file.size);
+                document.getElementById('imagePreview').style.display = 'block';
+                
+                // Update upload zone
+                document.getElementById('uploadZone').classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function clearImagePreview() {
+            document.getElementById('Image').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadZone').classList.remove('has-file');
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.createElement('div');
+            alertContainer.className = `alert alert-${type} alert-dismissible fade show`;
+            alertContainer.innerHTML = `
+                <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insert at the top of the page content
+            const pageContent = document.querySelector('.management-header');
+            if (pageContent) {
+                pageContent.insertAdjacentElement('afterend', alertContainer);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (alertContainer) {
+                        const bsAlert = new bootstrap.Alert(alertContainer);
+                        bsAlert.close();
+                    }
+                }, 5000);
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,250 @@
+@model ETicaret.Core.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Sipariş Düzenle";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Sipariş Düzenle - @Model.OrderNumber</h1>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Geri Dön
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="row">
+            <!-- Sol Taraf - Sipariş Bilgileri -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-edit me-2"></i> Sipariş Bilgileri
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="OrderStatus" class="form-label">Sipariş Durumu</label>
+                                <select asp-for="OrderStatus" class="form-select">
+                                    <option value="0">Beklemede</option>
+                                    <option value="1">Onaylandı</option>
+                                    <option value="2">Hazırlanıyor</option>
+                                    <option value="3">Kargoda</option>
+                                    <option value="4">Teslim Edildi</option>
+                                    <option value="5">İptal Edildi</option>
+                                </select>
+                                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PaymentMethod" class="form-label">Ödeme Yöntemi</label>
+                                <select asp-for="PaymentMethod" class="form-select">
+                                    <option value="0">Kredi Kartı</option>
+                                    <option value="1">Banka Kartı</option>
+                                    <option value="2">Kapıda Ödeme</option>
+                                    <option value="3">Havale/EFT</option>
+                                </select>
+                                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label asp-for="Notes" class="form-label">Sipariş Notları</label>
+                                <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Sipariş ile ilgili notlar..."></textarea>
+                                <span asp-validation-for="Notes" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sipariş Ürünleri -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-shopping-bag me-2"></i> Sipariş Ürünleri
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ürün</th>
+                                        <th>Fiyat</th>
+                                        <th>Miktar</th>
+                                        <th>Toplam</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="~/Img/Products/@item.ProductImage" 
+                                                         alt="@item.ProductName" 
+                                                         class="me-3" 
+                                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                    <div>
+                                                        <strong>@item.ProductName</strong>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@item.Price.ToString("C")</td>
+                                            <td>@item.Quantity</td>
+                                            <td><strong>@item.TotalPrice.ToString("C")</strong></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Taraf - Özet Bilgiler -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-info-circle me-2"></i> Sipariş Özeti
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Sipariş Numarası:</strong><br>
+                            <span class="text-primary">@Model.OrderNumber</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Sipariş Tarihi:</strong><br>
+                            <span>@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Müşteri:</strong><br>
+                            <span>@Model.Address.FullName</span><br>
+                            <small class="text-muted">@Model.Address.Phone</small>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Teslimat Adresi:</strong><br>
+                            <small>@Model.Address.FullAddress<br>
+                            @Model.Address.City / @Model.Address.District</small>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Ara Toplam:</span>
+                            <span>@Model.TotalAmount.ToString("C")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Kargo Ücreti:</span>
+                            <span>@(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("C"))</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong>Genel Toplam:</strong>
+                            <strong class="text-primary">@Model.GrandTotal.ToString("C")</strong>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i> Değişiklikleri Kaydet
+                            </button>
+                            <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i> Detayları Görüntüle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Form validation
+            $('form').on('submit', function(e) {
+                var isValid = true;
+                
+                // Durum seçimi kontrolü
+                if ($('#OrderStatus').val() === '') {
+                    isValid = false;
+                    alert('Lütfen sipariş durumunu seçin.');
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    /* Dropdown menü düzeltmeleri */
+    .dropdown-menu {
+        z-index: 1050 !important;
+        position: absolute !important;
+        min-width: 200px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.375rem;
+    }
+    
+    .btn-group {
+        position: relative;
+    }
+    
+    .btn-group .dropdown-menu {
+        top: 100% !important;
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+    
+    /* Dropdown item'ları için hover efekti */
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    
+    .dropdown-item.text-danger:hover {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    /* Form içindeki butonlar için düzeltme */
+    .dropdown-item form {
+        margin: 0;
+    }
+    
+    .dropdown-item button {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 0.25rem 1rem;
+        color: inherit;
+    }
+    
+    .dropdown-item button:hover {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    
+    /* Responsive düzeltmeler */
+    @@media (max-width: 768px) {
+        .btn-group .dropdown-menu {
+            right: auto !important;
+            left: 0 !important;
+        }
+    }
+</style>

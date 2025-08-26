@@ -1,0 +1,149 @@
+@model List<ETicaret.Core.Entities.Product>
+@{
+    ViewData["Title"] = ViewBag.CategoryName + " Ürünleri";
+}
+
+<div class="category-products-page">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>@ViewBag.CategoryName</h1>
+            <p>Bu kategorideki tüm ürünleri keşfedin</p>
+        </div>
+
+        <!-- Products Info -->
+        @if (Model.Any())
+        {
+            <div class="products-info">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">@ViewBag.TotalProducts ürün bulundu</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="mb-0">Sayfa @ViewBag.CurrentPage / @ViewBag.TotalPages</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid">
+                @foreach (var product in Model)
+                {
+                    <div class="product-card">
+                        <div class="product-image">
+                            <a href="/Home/ProductDetail/@product.Id">
+                                <img src="~/Img/Products/@product.Image" alt="@product.Name">
+                            </a>
+                            @if (product.Stock <= 0)
+                            {
+                                <div class="product-badge">Stokta Yok</div>
+                            }
+
+                        </div>
+                        
+                        <div class="product-content">
+                            <div class="product-category">
+                                @if (product.Category != null)
+                                {
+                                    @product.Category.Name
+                                }
+                            </div>
+                            <h3><a href="/Home/ProductDetail/@product.Id">@product.Name</a></h3>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span>(24)</span>
+                            </div>
+                            <div class="product-price">
+                                <span>@product.Price.ToString("F2") ₺</span>
+                            </div>
+                            <div class="product-actions mt-3">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(product.Id))
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn-active" onclick="removeFromFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="fas fa-heart me-2"></i>Favorilerden Çıkar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm w-100 favorite-btn" onclick="removeFromFavorites(@product.Id)" data-product-id="@product.Id">
+                                                <i class="far fa-heart me-2"></i>Favorilere Ekle
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary btn-sm w-100" onclick="addToCart(@product.Id)">
+                                            <i class="fas fa-shopping-cart me-2"></i>Sepete Ekle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (ViewBag.TotalPages > 1)
+            {
+                <div class="pagination-wrapper">
+                    <nav aria-label="Sayfa navigasyonu">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("CategoryProducts", new { id = ViewBag.CategoryId, page = ViewBag.CurrentPage - 1 })">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("CategoryProducts", new { id = ViewBag.CategoryId, page = i })">@i</a>
+                                </li>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("CategoryProducts", new { id = ViewBag.CategoryId, page = ViewBag.CurrentPage + 1 })">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-products">
+                <div class="no-products-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3>Bu kategoride henüz ürün bulunmuyor</h3>
+                <p>Daha sonra tekrar kontrol edin veya diğer kategorileri inceleyin.</p>
+                <a href="/" class="btn btn-primary">Ana Sayfaya Dön</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            // Sepete ekleme işlemi burada yapılacak
+            showNotification('Ürün sepete eklendi!', 'success');
+        }
+    </script>
+}

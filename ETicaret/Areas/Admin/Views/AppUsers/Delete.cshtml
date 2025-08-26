@@ -1,0 +1,107 @@
+﻿@model ETicaret.Core.Entities.AppUser
+
+@{
+    ViewData["Title"] = "Kullanıcı Sil";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Kullanıcı Silme Onayı
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    @if (!Model.IsDeletable)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Uyarı:</strong> Bu kullanıcı silinemez!
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Geri Dön
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Dikkat:</strong> Bu işlem geri alınamaz! Kullanıcı kalıcı olarak silinecektir.
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Ad:</label>
+                                <p class="form-control-plaintext">@Model.Name</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Soyad:</label>
+                                <p class="form-control-plaintext">@Model.SurName</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">E-posta:</label>
+                                <p class="form-control-plaintext">@Model.Email</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Kullanıcı ID:</label>
+                                <p class="form-control-plaintext">@Model.Id</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Durum:</label>
+                                <p class="form-control-plaintext">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Yetki:</label>
+                                <p class="form-control-plaintext">
+                                    @if (Model.IsAdmin)
+                                    {
+                                        <span class="badge bg-warning">Admin</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Kullanıcı</span>
+                                    }
+                                </p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Kayıt Tarihi:</label>
+                                <p class="form-control-plaintext">@Model.CreateDate.ToString("dd.MM.yyyy")</p>
+                            </div>
+                        </div>
+
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Kullanıcıyı Sil
+                                </button>
+                                <a asp-action="Index" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>İptal Et
+                                </a>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

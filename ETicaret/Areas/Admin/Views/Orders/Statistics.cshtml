@@ -1,0 +1,263 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Sipariş İstatistikleri";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="fas fa-chart-bar me-2"></i> Sipariş İstatistikleri
+        </h1>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Siparişlere Dön
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- İstatistik Kartları -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Toplam Sipariş
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TotalOrders</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-shopping-bag fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Teslim Edilen
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.DeliveredOrders</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Toplam Ciro
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TotalRevenue.ToString("C")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-lira-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Ortalama Sipariş
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.AverageOrderValue.ToString("C")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sipariş Durumu Dağılımı -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie me-2"></i> Sipariş Durumu Dağılımı
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Durum</th>
+                                    <th>Adet</th>
+                                    <th>Yüzde</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge bg-warning">Beklemede</span></td>
+                                    <td>@Model.PendingOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.PendingOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-info">Onaylandı</span></td>
+                                    <td>@Model.ConfirmedOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.ConfirmedOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-primary">Hazırlanıyor</span></td>
+                                    <td>@Model.PreparingOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.PreparingOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-info">Kargoda</span></td>
+                                    <td>@Model.ShippedOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.ShippedOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-success">Teslim Edildi</span></td>
+                                    <td>@Model.DeliveredOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.DeliveredOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">İptal Edildi</span></td>
+                                    <td>@Model.CancelledOrders</td>
+                                    <td>@(Model.TotalOrders > 0 ? ((double)Model.CancelledOrders / Model.TotalOrders * 100).ToString("F1") : "0")%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-bar me-2"></i> Performans Metrikleri
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <div class="text-center">
+                                <div class="h4 text-primary">@Model.DeliveredOrders</div>
+                                <div class="text-muted">Teslim Edilen</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="text-center">
+                                <div class="h4 text-warning">@Model.PendingOrders</div>
+                                <div class="text-muted">Beklemede</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="text-center">
+                                <div class="h4 text-info">@Model.ShippedOrders</div>
+                                <div class="text-muted">Kargoda</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="text-center">
+                                <div class="h4 text-danger">@Model.CancelledOrders</div>
+                                <div class="text-muted">İptal Edilen</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <h5 class="text-success">@Model.TotalRevenue.ToString("C")</h5>
+                        <p class="text-muted mb-0">Toplam Ciro</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı İşlemler -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-tools me-2"></i> Hızlı İşlemler
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("Index", new { status = "0" })" class="btn btn-warning btn-sm w-100">
+                                <i class="fas fa-clock me-1"></i> Bekleyen Siparişler
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("Index", new { status = "2" })" class="btn btn-primary btn-sm w-100">
+                                <i class="fas fa-box me-1"></i> Hazırlanan Siparişler
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("Index", new { status = "3" })" class="btn btn-info btn-sm w-100">
+                                <i class="fas fa-shipping-fast me-1"></i> Kargodaki Siparişler
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("Index", new { status = "4" })" class="btn btn-success btn-sm w-100">
+                                <i class="fas fa-check-circle me-1"></i> Teslim Edilenler
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+    .border-left-info {
+        border-left: 0.25rem solid #36b9cc !important;
+    }
+    .border-left-warning {
+        border-left: 0.25rem solid #f6c23e !important;
+    }
+    .text-xs {
+        font-size: 0.7rem;
+    }
+    .text-gray-300 {
+        color: #dddfeb !important;
+    }
+    .text-gray-800 {
+        color: #5a5c69 !important;
+    }
+</style>

@@ -1,0 +1,99 @@
+@model ETicaret.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Üye Ol";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Üye Ol
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Register" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input asp-for="Name" class="form-control" placeholder="Adınız" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Surname" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input asp-for="Surname" class="form-control" placeholder="Soyadınız" />
+                                </div>
+                                <span asp-validation-for="Surname" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input asp-for="Password" class="form-control" placeholder="En az 6 karakter" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Şifrenizi tekrar giriniz" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Üye Ol
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="mb-0">Zaten hesabınız var mı?</p>
+                        <a asp-action="Login" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

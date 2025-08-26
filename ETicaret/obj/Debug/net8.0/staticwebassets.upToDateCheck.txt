@@ -1,0 +1,147 @@
+wwwroot\admin\401.html
+wwwroot\admin\404.html
+wwwroot\admin\500.html
+wwwroot\admin\assets\demo\chart-area-demo.js
+wwwroot\admin\assets\demo\chart-bar-demo.js
+wwwroot\admin\assets\demo\chart-pie-demo.js
+wwwroot\admin\assets\demo\datatables-demo.js
+wwwroot\admin\assets\img\error-404-monochrome.svg
+wwwroot\admin\charts.html
+wwwroot\admin\css\admin-styles.css
+wwwroot\admin\css\styles.css
+wwwroot\admin\index.html
+wwwroot\admin\js\admin.js
+wwwroot\admin\js\admin-scripts.js
+wwwroot\admin\js\datatables-simple-demo.js
+wwwroot\admin\js\scripts.js
+wwwroot\admin\layout-sidenav-light.html
+wwwroot\admin\layout-static.html
+wwwroot\admin\login.html
+wwwroot\admin\password.html
+wwwroot\admin\register.html
+wwwroot\admin\tables.html
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\Img\Brands\ASYA OYUNCAK_20250818101714.png
+wwwroot\Img\Brands\BEREN OYUNCAK_20250818102453.png
+wwwroot\Img\Brands\BESTWAY_20250818100039.png
+wwwroot\Img\Brands\BİRLİK OYUNCAK_20250818101630.png
+wwwroot\Img\Brands\CAN İTHALAT_20250818101557.png
+wwwroot\Img\Brands\CANEM OYUNCAK_20250818101406.png
+wwwroot\Img\Brands\DEDE_20250826111417.png
+wwwroot\Img\Brands\DOLU OYUNCAK_20250818101333.webp
+wwwroot\Img\Brands\DUMAN OYUNCAK_20250818101249.png
+wwwroot\Img\Brands\EFE TOYS_20250818101151.png
+wwwroot\Img\Brands\ENFAL OYUNCAK_20250814101815.png
+wwwroot\Img\Brands\ENFAL OYUNCAK_20250818101044.png
+wwwroot\Img\Brands\FEN OYUNCAK _20250818102253.webp
+wwwroot\Img\Brands\FURKAN TOYS_20250818101019.png
+wwwroot\Img\Brands\GLOBAL TOYS_20250818100542.webp
+wwwroot\Img\Brands\HALLEY_20250818100314.webp
+wwwroot\Img\Brands\HASBRO_20250818101951.png
+wwwroot\Img\Brands\HASBRO_20250826111502.png
+wwwroot\Img\Brands\HOBİ TOYS_20250818094218.png
+wwwroot\Img\Brands\HOTWHEELS_20250826111401.jpg
+wwwroot\Img\Brands\KAYYUM OYUNCAK_20250818102406.png
+wwwroot\Img\Brands\LEGO_20250826111447.png
+wwwroot\Img\Brands\MATRAX OYUNCAK_20250818100937.webp
+wwwroot\Img\Brands\MATTEL_20250818102133.png
+wwwroot\Img\Brands\MOLİ TOYS_20250818100632.png
+wwwroot\Img\Brands\OYDAŞ OYUNCAK_20250818100142.webp
+wwwroot\Img\Brands\PİLSAN OYUNCAK_20250818102229.png
+wwwroot\Img\Brands\PİLSAN_20250826111433.png
+wwwroot\Img\Brands\PRESTİJ OYUNCAK_20250818100454.webp
+wwwroot\Img\Brands\REDKA_20250818095631.png
+wwwroot\Img\Brands\SEHER OYUNCAK_20250818102638.webp
+wwwroot\Img\Brands\SELAY TOYS_20250818095338.png
+wwwroot\Img\Brands\SEPETÇİ TOYS_20250818100800.jpeg
+wwwroot\Img\Brands\SUNMAN_20250818094505.png
+wwwroot\Img\Brands\Vardem Oyuncak_20250814104004.png
+wwwroot\Img\Brands\VARDEM OYUNCAK_20250818102325.png
+wwwroot\Img\hero-main.jpg
+wwwroot\Img\mega-menu-bg.jpg
+wwwroot\Img\Products\180 PARÇALI BLOCKS_20250818132158.jpg
+wwwroot\Img\Products\24 LÜ KT.İTFAİYE ARAÇLARI _20250818132303.jpg
+wwwroot\Img\Products\ANTRENMAN MERDİVENİ _20250818132402.jpg
+wwwroot\Img\Products\BARBİE BEBEK_20250826111747.jpg
+wwwroot\Img\Products\HOTWHEELS ARABA _20250826111843.jpg
+wwwroot\Img\Products\Intex Sarı Bebe Flatörü 70 cm. (6-12Ay)_20250818115941.jpg
+wwwroot\Img\Products\KIRMIZI SCOOTER_20250818163423.jpg
+wwwroot\Img\Products\Kumandalılar_20250814162824.jpeg
+wwwroot\Img\Products\Lego _20250826112019.jpg
+wwwroot\Img\Products\LEGO_20250826112215.jpg
+wwwroot\Img\Products\Oyun Setleri_20250826112055.jpg
+wwwroot\Img\Products\ŞATO EV_20250826111923.png
+wwwroot\Img\Products\TABU_20250826112151.png
+wwwroot\Img\Products\Vardem Mikrofonlu 24 Tuşlu Mp3 Çalar Mini Piyano _20250818120040.jpg
+wwwroot\Img\Products\Vardem Peluş Tasmalı Yürüyen-Havlayan Fino Köpek _20250818120127.jpg
+wwwroot\Img\Products\Vardem Uzaktan Kumandalı Full Fonksiyon Şarjlı 2,4G 8 Teker Buhar Atan Dinozor Araba_20250818115615.jpg
+wwwroot\Img\Products\Vardem Uzaktan Kumandalı Full Fonksiyon Şarjlı 2,4G Wifi Kameralı Stunt Araba _20250818115525.jpg
+wwwroot\Img\Products\Vardem Uzaktan Kumandalı Full Fonksiyon Şarjlı Işıklı 2.4G Crazon (Çılgın) Renkli Drift Araba _20250818115709.jpg
+wwwroot\Img\Sliders\aaaaaaaaa_20250814160259.jpeg
+wwwroot\Img\Sliders\aaaaaaaaa_20250814160602.jpeg
+wwwroot\Img\Sliders\aaaaaaaaa_20250814160608.jpeg
+wwwroot\Img\Sliders\aaaaaaaaaaa_20250814153151.jpeg
+wwwroot\Img\Sliders\aaaaaaaaaaa_20250814153211.png
+wwwroot\Img\Sliders\KAMPANYA_20250818163553.png
+wwwroot\Img\Sliders\KAMPANYA_20250826112340.png
+wwwroot\Img\WhatsApp Görsel 2025-06-11 saat 22.15.14_361fcb10.jpg
+wwwroot\index.html
+wwwroot\js\site.js
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\LICENSE.txt
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt

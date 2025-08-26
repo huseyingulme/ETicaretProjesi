@@ -1,0 +1,201 @@
+﻿@model IEnumerable<ETicaret.Core.Entities.AppUser>
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-users me-3"></i>Kullanıcı Yönetimi
+    </h1>
+    <p class="management-subtitle">Sitenizdeki kullanıcıları yönetin, yetkilerini düzenleyin ve hesaplarını kontrol edin</p>
+    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    <div class="management-stats">
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count()</span>
+            <span class="stat-label">Toplam Kullanıcı</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(u => u.IsActive)</span>
+            <span class="stat-label">Aktif Kullanıcı</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(u => !u.IsActive)</span>
+            <span class="stat-label">Pasif Kullanıcı</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(u => u.IsAdmin)</span>
+            <span class="stat-label">Admin Kullanıcı</span>
+        </div>
+    </div>
+</div>
+
+<div class="action-buttons">
+    <a asp-action="Create" class="btn-create">
+        <i class="fas fa-plus"></i>
+        Yeni Kullanıcı Ekle
+    </a>
+</div>
+
+<div class="management-table">
+    <table class="table" id="usersTable">
+        <thead>
+            <tr>
+                <th>Kullanıcı Bilgileri</th>
+                <th>İletişim</th>
+                <th>Durum</th>
+                <th>Yetki</th>
+                <th>Kayıt Tarihi</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="entity-header">
+                            <div class="entity-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h6 class="entity-title">@item.Name @item.SurName</h6>
+                                <small class="text-muted">ID: @item.Id</small>
+                                @if (!item.IsDeletable)
+                                {
+                                    <small class="text-danger d-block">
+                                        <i class="fas fa-shield-alt"></i> Silinemez
+                                    </small>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="meta-item">
+                                <i class="fas fa-envelope meta-icon"></i>
+                                <a href="mailto:@item.Email" class="text-decoration-none">@item.Email</a>
+                            </div>
+                            @if (!string.IsNullOrEmpty(item.Phone))
+                            {
+                                <div class="meta-item">
+                                    <i class="fas fa-phone meta-icon"></i>
+                                    <a href="tel:@item.Phone" class="text-decoration-none">@item.Phone</a>
+                                </div>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="status-badge status-active">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-inactive">Pasif</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsAdmin)
+                        {
+                            <span class="status-badge status-admin">
+                                <i class="fas fa-user-shield me-1"></i>Admin
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-user">
+                                <i class="fas fa-user me-1"></i>Kullanıcı
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar meta-icon"></i>
+                            <span>@(item.CreateDate.ToString("dd.MM.yyyy"))</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            @{
+                                var currentUserId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                                var isCurrentUser = item.Id == currentUserId;
+                            }
+                            
+                            @if (isCurrentUser)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit" title="Kendi hesabınızı düzenleyin">
+                                    <i class="fas fa-edit"></i>
+                                    Düzenle
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                    Düzenle
+                                </a>
+                            }
+                            
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details">
+                                <i class="fas fa-eye"></i>
+                                Detay
+                            </a>
+                            
+                            @if (!isCurrentUser && item.IsDeletable)
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                    Sil
+                                </a>
+                            }
+                            else if (isCurrentUser)
+                            {
+                                <button class="btn-action btn-delete" disabled title="Kendi hesabınızı silemezsiniz">
+                                    <i class="fas fa-trash"></i>
+                                    Sil
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn-action btn-delete" disabled title="Bu kullanıcı silinemez">
+                                    <i class="fas fa-trash"></i>
+                                    Sil
+                                </button>
+                            }
+                            
+                            @if (!isCurrentUser)
+                            {
+                                <form asp-action="ToggleAdminStatus" method="post" style="display: inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn-action @(item.IsAdmin ? "btn-warning" : "btn-success")" 
+                                            onclick="return confirm('@(item.IsAdmin ? "Admin yetkisini kaldırmak" : "Admin yetkisi vermek") istediğinizden emin misiniz?')">
+                                        <i class="fas @(item.IsAdmin ? "fa-user-minus" : "fa-user-shield")"></i>
+                                        @(item.IsAdmin ? "Admin Yetkisini Kaldır" : "Admin Yap")
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

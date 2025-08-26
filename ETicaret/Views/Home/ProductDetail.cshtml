@@ -1,0 +1,469 @@
+
+@model ETicaret.Core.Entities.Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="product-detail-page">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Ana Sayfa</a></li>
+                @if (Model.Category != null)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="/Home/CategoryProducts/@Model.Category.Id">@Model.Category.Name</a>
+                    </li>
+                }
+                <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="product-images position-relative">
+                    <div class="main-image">
+                        <img src="~/Img/Products/@Model.Image" alt="@Model.Name" id="mainImage">
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+                        <div class="thumbnail-images">
+                            <div class="thumbnail active" onclick="changeImage('~/Img/Products/@Model.Image')">
+                                <img src="~/Img/Products/@Model.Image" alt="@Model.Name">
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <div class="product-category">
+                        @if (Model.Category != null)
+                        {
+                            <a href="/Home/CategoryProducts/@Model.Category.Id">@Model.Category.Name</a>
+                        }
+                    </div>
+                    
+                    <h1 class="product-title">@Model.Name</h1>
+                    
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="rating-text">(24 değerlendirme)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">@Model.Price.ToString("F2") ₺</span>
+                    </div>
+                    
+                    <div class="product-stock">
+                        @if (Model.Stock > 0)
+                        {
+                            <span class="in-stock">
+                                <i class="fas fa-check-circle"></i>
+                                Stokta: @Model.Stock adet
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="out-of-stock">
+                                <i class="fas fa-times-circle"></i>
+                                Stokta Yok
+                            </span>
+                        }
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="product-description">
+                            <h4>Ürün Açıklaması</h4>
+                            <p>@Model.Description</p>
+                        </div>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(Model.ProductCode))
+                    {
+                        <div class="product-code">
+                            <span>Ürün Kodu: <strong>@Model.ProductCode</strong></span>
+                        </div>
+                    }
+                    
+                    <div class="product-actions">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(Model.Id))
+                                {
+                                    <button class="btn btn-outline-danger btn-lg w-100 favorite-btn-active" onclick="removeFromFavorites(@Model.Id)" data-product-id="@Model.Id">
+                                        <i class="fas fa-heart me-2"></i>Favorilerden Çıkar
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-danger btn-lg w-100 favorite-btn" onclick="addToFavorites(@Model.Id)" data-product-id="@Model.Id">
+                                        <i class="far fa-heart me-2"></i>Favorilere Ekle
+                                    </button>
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                @if (Model.Stock > 0)
+                                {
+                                    <div class="add-to-cart-section">
+                                        <div class="quantity-selector mb-3">
+                                            <label for="quantity" class="form-label">Miktar:</label>
+                                            <div class="input-group">
+                                                <button type="button" class="btn btn-outline-secondary quantity-btn" data-action="decrease">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <input type="number" id="quantity" class="form-control text-center" value="1" min="1" max="@Model.Stock">
+                                                <button type="button" class="btn btn-outline-secondary quantity-btn" data-action="increase">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg w-100 add-to-cart-btn" onclick="addToCart(@Model.Id)">
+                                            <i class="fas fa-shopping-cart me-2"></i>Sepete Ekle
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary btn-lg w-100" disabled>
+                                        <i class="fas fa-bell me-2"></i>Stok Habercisi
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i>
+                            <span>Marka: 
+                                @if (Model.Brand != null)
+                                {
+                                    <a href="/Home/BrandProducts/@Model.Brand.Id">@Model.Brand.Name</a>
+                                }
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>Eklenme: @Model.CreateDate.ToString("dd MMM yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        @if (ViewBag.RelatedProducts != null && ((List<ETicaret.Core.Entities.Product>)ViewBag.RelatedProducts).Any())
+        {
+            <section class="related-products">
+                <div class="section-header text-center">
+                    <h2>Benzer Ürünler</h2>
+                    <p>Bu kategoriye ait diğer ürünleri de inceleyin</p>
+                </div>
+                
+                <div class="products-grid">
+                    @foreach (var relatedProduct in (List<ETicaret.Core.Entities.Product>)ViewBag.RelatedProducts)
+                    {
+                        <div class="product-card">
+                            <div class="product-image">
+                                <a href="/Home/ProductDetail/@relatedProduct.Id">
+                                    <img src="~/Img/Products/@relatedProduct.Image" alt="@relatedProduct.Name">
+                                </a>
+                                @if (relatedProduct.Stock <= 0)
+                                {
+                                    <div class="product-badge">Stokta Yok</div>
+                                }
+                            </div>
+                            
+                            <div class="product-content">
+                                <div class="product-category">
+                                    @if (relatedProduct.Category != null)
+                                    {
+                                        @relatedProduct.Category.Name
+                                    }
+                                </div>
+                                <h3><a href="/Home/ProductDetail/@relatedProduct.Id">@relatedProduct.Name</a></h3>
+                                <div class="product-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span>(24)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>@relatedProduct.Price.ToString("F2") ₺</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+</div>
+
+<style>
+    .quantity-selector {
+        max-width: 200px;
+    }
+    
+    .quantity-selector .input-group {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .quantity-selector .form-control {
+        border: none;
+        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .quantity-selector .btn {
+        border: 1px solid #dee2e6;
+        background: #f8f9fa;
+        color: #495057;
+        transition: all 0.3s ease;
+    }
+    
+    .quantity-selector .btn:hover:not(:disabled) {
+        background: #e9ecef;
+        border-color: #adb5bd;
+    }
+    
+    .quantity-selector .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .add-to-cart-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .add-to-cart-btn {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+    
+    .add-to-cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    }
+    
+    .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        padding: 16px 20px;
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        border-left: 4px solid;
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.toast-success {
+        border-left-color: #28a745;
+    }
+    
+    .toast-notification.toast-error {
+        border-left-color: #dc3545;
+    }
+    
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .toast-content i {
+        font-size: 18px;
+    }
+    
+    .toast-success .toast-content i {
+        color: #28a745;
+    }
+    
+    .toast-error .toast-content i {
+        color: #dc3545;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function changeImage(imageSrc) {
+            document.getElementById('mainImage').src = imageSrc;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            event.target.closest('.thumbnail').classList.add('active');
+        }
+
+        // Miktar seçici işlemleri
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInput = document.getElementById('quantity');
+            const decreaseBtn = document.querySelector('[data-action="decrease"]');
+            const increaseBtn = document.querySelector('[data-action="increase"]');
+
+            decreaseBtn.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    updateQuantityButtons();
+                }
+            });
+
+            increaseBtn.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                let maxValue = parseInt(quantityInput.max);
+                if (currentValue < maxValue) {
+                    quantityInput.value = currentValue + 1;
+                    updateQuantityButtons();
+                }
+            });
+
+            quantityInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                let min = parseInt(this.min);
+                let max = parseInt(this.max);
+                
+                if (value < min) this.value = min;
+                if (value > max) this.value = max;
+                
+                updateQuantityButtons();
+            });
+
+            updateQuantityButtons();
+        });
+
+        function updateQuantityButtons() {
+            const quantityInput = document.getElementById('quantity');
+            const decreaseBtn = document.querySelector('[data-action="decrease"]');
+            const increaseBtn = document.querySelector('[data-action="increase"]');
+            
+            const currentValue = parseInt(quantityInput.value);
+            const maxValue = parseInt(quantityInput.max);
+            
+            decreaseBtn.disabled = currentValue <= 1;
+            increaseBtn.disabled = currentValue >= maxValue;
+        }
+
+        function addToCart(productId) {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            if (quantity < 1) {
+                alert('Lütfen geçerli bir miktar seçin.');
+                return;
+            }
+
+            // Loading durumu
+            const addToCartBtn = document.querySelector('.add-to-cart-btn');
+            const originalText = addToCartBtn.innerHTML;
+            addToCartBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Ekleniyor...';
+            addToCartBtn.disabled = true;
+
+            // AJAX ile sepete ekle
+            fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                body: JSON.stringify({
+                    ProductId: productId,
+                    Quantity: quantity,
+                    ReturnUrl: window.location.href
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Başarılı mesajı göster
+                    showNotification('Ürün sepete eklendi!', 'success');
+                    
+                    // Sepet sayısını güncelle
+                    updateCartCount();
+                    
+                    // 2 saniye sonra sepet sayfasına yönlendir
+                    setTimeout(() => {
+                        window.location.href = '/Cart';
+                    }, 2000);
+                } else {
+                    showNotification(data.message || 'Bir hata oluştu.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            })
+            .finally(() => {
+                // Buton durumunu geri yükle
+                addToCartBtn.innerHTML = originalText;
+                addToCartBtn.disabled = false;
+            });
+        }
+
+        function showNotification(message, type) {
+            // Toast notification oluştur
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Animasyon ile göster
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // 3 saniye sonra kaldır
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function updateCartCount() {
+            fetch('/Cart/GetCartCount')
+            .then(response => response.json())
+            .then(data => {
+                // Header'daki sepet sayısını güncelle
+                const cartCountElement = document.querySelector('.cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = data.count;
+                    cartCountElement.style.display = data.count > 0 ? 'inline' : 'none';
+                }
+            })
+            .catch(error => console.error('Error updating cart count:', error));
+        }
+    </script>
+}

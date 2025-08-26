@@ -1,0 +1,65 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Favorilerim";
+}
+
+<div class="container mt-4">
+    <h2>Favorilerim</h2>
+    
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="~/Img/Products/@product.Image" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Price.ToString("F2") ₺</p>
+                            <button class="btn btn-danger btn-sm" onclick="removeFavorite(@product.Id)">
+                                <i class="fas fa-heart"></i> Favorilerden Kaldır
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <h4>Henüz favori ürününüz yok</h4>
+            <p>Beğendiğiniz ürünleri favorilere ekleyerek buradan takip edebilirsiniz.</p>
+            <a href="/" class="btn btn-primary">Alışverişe Başla</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function removeFavorite(productId) {
+            if (confirm('Bu ürünü favorilerden kaldırmak istediğinizden emin misiniz?')) {
+                fetch('/Favorites/Remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'productId=' + productId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu');
+                });
+            }
+        }
+    </script>
+}

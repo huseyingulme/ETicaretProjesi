@@ -1,0 +1,330 @@
+@model ETicaret.Models.CartViewModel
+@{
+    ViewData["Title"] = "Sepetim";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 fw-bold text-primary">
+                <i class="fas fa-shopping-cart me-3"></i> Sepetim
+            </h2>
+        </div>
+    </div>
+
+    @if (Model.IsEmpty)
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart fa-6x text-primary mb-4"></i>
+                    <h3 class="text-primary fw-bold mb-3">Sepetiniz boş</h3>
+                    <p class="text-muted fs-5 mb-4">Alışverişe başlamak için ürünlerimize göz atın.</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg fw-bold">
+                        <i class="fas fa-arrow-left me-2"></i> Alışverişe Devam Et
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-list me-2"></i> Sepet Ürünleri (@Model.TotalItems ürün)
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="fw-bold fs-6">Ürün</th>
+                                        <th class="text-center fw-bold fs-6">Fiyat</th>
+                                        <th class="text-center fw-bold fs-6">Miktar</th>
+                                        <th class="text-center fw-bold fs-6">Toplam</th>
+                                        <th class="text-center fw-bold fs-6">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr class="cart-item" data-item-id="@item.Id">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="~/Img/Products/@item.ProductImage" 
+                                                         alt="@item.ProductName" 
+                                                         class="cart-product-image me-3"
+                                                         style="width: 70px; height: 70px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-1 fw-bold fs-6">@item.ProductName</h6>
+                                                        <small class="text-muted fs-6">@item.ProductCode</small>
+                                                        @if (!item.IsAvailable)
+                                                        {
+                                                            <div class="text-danger small fw-bold">Stokta yok</div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fw-bold fs-5 text-success item-price" data-price="@item.Price">@item.Price.ToString("F2") ₺</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="quantity-controls d-flex align-items-center justify-content-center">
+                                                    <button class="btn btn-outline-secondary quantity-btn" 
+                                                            data-action="decrease" 
+                                                            @(item.Quantity <= 1 ? "disabled" : "")>
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <input type="number" 
+                                                           class="form-control quantity-input mx-2" 
+                                                           value="@item.Quantity" 
+                                                           min="1" 
+                                                           max="@item.Stock"
+                                                           style="width: 60px; text-align: center;">
+                                                    <button class="btn btn-outline-secondary quantity-btn" 
+                                                            data-action="increase" 
+                                                            @(item.Quantity >= item.Stock ? "disabled" : "")>
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fw-bold text-primary item-total fs-5" data-item-id="@item.Id">@item.TotalPrice.ToString("F2") ₺</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <button class="btn btn-outline-danger remove-item-btn" 
+                                                        data-item-id="@item.Id"
+                                                        title="Ürünü Sepetten Kaldır">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary btn-lg fw-bold">
+                        <i class="fas fa-arrow-left me-2"></i> Alışverişe Devam Et
+                    </a>
+                    <button class="btn btn-outline-danger btn-lg fw-bold" id="clear-cart-btn">
+                        <i class="fas fa-trash me-2"></i> Sepeti Temizle
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-calculator me-2"></i> Sepet Özeti
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fs-6 fw-semibold">Ürün Sayısı:</span>
+                            <span class="fw-bold fs-6 text-primary">@Model.TotalItems</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fs-6 fw-semibold">Ara Toplam:</span>
+                            <span class="fw-bold fs-6 text-success">@Model.TotalPrice.ToString("F2") ₺</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fs-6 fw-semibold">Kargo Ücreti:</span>
+                            <span class="fw-bold fs-6 text-warning">100,00 ₺</span>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="h5 mb-0 fw-bold">Toplam:</span>
+                            <span class="h4 mb-0 text-primary fw-bold" id="cart-total">@((Model.TotalPrice + 100).ToString("F2")) ₺</span>
+                        </div>
+                        
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            @if (Model.TotalItems > 0)
+                            {
+                                <a href="@Url.Action("Checkout", "Order")" class="btn btn-success btn-lg w-100 mb-3 fw-bold">
+                                    <i class="fas fa-check-circle me-2"></i> Sepeti Onayla
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary btn-lg w-100 mb-3 fw-bold" disabled>
+                                    <i class="fas fa-shopping-cart me-2"></i> Sepet Boş
+                                </button>
+                                <div class="text-center mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i> 
+                                        Sipariş vermek için sepete ürün ekleyin
+                                    </small>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account")" class="btn btn-warning btn-lg w-100 mb-3 fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i> Giriş Yap ve Ödemeye Geç
+                            </a>
+                        }
+                        
+                        <div class="text-center">
+                            <small class="text-muted fw-semibold">
+                                <i class="fas fa-shield-alt me-1"></i> Güvenli ödeme
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            console.log('Sepet sayfası yüklendi');
+
+            // Miktar değiştirme butonları
+            $('.quantity-btn').on('click', function() {
+                var action = $(this).data('action');
+                var input = $(this).siblings('.quantity-input');
+                var currentValue = parseInt(input.val());
+                var maxValue = parseInt(input.attr('max'));
+                var minValue = parseInt(input.attr('min'));
+
+                if (action === 'increase' && currentValue < maxValue) {
+                    input.val(currentValue + 1);
+                } else if (action === 'decrease' && currentValue > minValue) {
+                    input.val(currentValue - 1);
+                }
+
+                // Miktar değiştiğinde güncelle
+                updateQuantity($(this).closest('tr'));
+            });
+
+            // Miktar input değişikliği
+            $('.quantity-input').on('change', function() {
+                var value = parseInt($(this).val());
+                var maxValue = parseInt($(this).attr('max'));
+                var minValue = parseInt($(this).attr('min'));
+
+                if (value > maxValue) {
+                    $(this).val(maxValue);
+                } else if (value < minValue) {
+                    $(this).val(minValue);
+                }
+
+                updateQuantity($(this).closest('tr'));
+            });
+
+            // Ürün kaldırma
+            $('.remove-item-btn').on('click', function() {
+                var itemId = $(this).data('item-id');
+                var row = $(this).closest('tr');
+                
+                if (confirm('Bu ürünü sepetten kaldırmak istediğinizden emin misiniz?')) {
+                    removeItem(itemId, row);
+                }
+            });
+
+            // Sepeti temizleme
+            $('#clear-cart-btn').on('click', function() {
+                if (confirm('Sepeti temizlemek istediğinizden emin misiniz?')) {
+                    clearCart();
+                }
+            });
+
+
+            
+            console.log('Event binding tamamlandı');
+        });
+
+        function updateQuantity(row) {
+            var itemId = row.data('item-id');
+            var quantity = parseInt(row.find('.quantity-input').val());
+            var price = parseFloat(row.find('.item-price').data('price'));
+            var total = quantity * price;
+            
+            // Toplam fiyatı güncelle
+            row.find('.item-total').text(total.toFixed(2) + ' ₺');
+            
+            // AJAX ile sunucuya gönder
+            $.ajax({
+                url: '@Url.Action("UpdateQuantity", "Cart")',
+                type: 'POST',
+                data: {
+                    cartItemId: itemId,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Sepet toplamını güncelle
+                        updateCartTotal(parseFloat(response.totalPrice.replace(' ₺', '').replace(',', '.')));
+                    } else {
+                        alert('Miktar güncellenirken bir hata oluştu: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Miktar güncellenirken bir hata oluştu.');
+                }
+            });
+        }
+
+        function removeItem(itemId, row) {
+            $.ajax({
+                url: '@Url.Action("RemoveItem", "Cart")',
+                type: 'POST',
+                data: { cartItemId: itemId },
+                success: function(response) {
+                    if (response.success) {
+                        row.fadeOut(300, function() {
+                            $(this).remove();
+                            updateCartTotal(parseFloat(response.totalPrice.replace(' ₺', '').replace(',', '.')));
+                            
+                            // Eğer sepet boşaldıysa sayfayı yenile
+                            if (response.totalItems === 0) {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        alert('Ürün kaldırılırken bir hata oluştu: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Ürün kaldırılırken bir hata oluştu.');
+                }
+            });
+        }
+
+        function clearCart() {
+            $.ajax({
+                url: '@Url.Action("ClearCart", "Cart")',
+                type: 'POST',
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Sepet temizlenirken bir hata oluştu: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Sepet temizlenirken bir hata oluştu.');
+                }
+            });
+        }
+
+        function updateCartTotal(totalPrice) {
+            var shippingCost = 100;
+            var grandTotal = totalPrice + shippingCost;
+            
+            $('#cart-total').text(grandTotal.toFixed(2) + ' ₺');
+        }
+    </script>
+}

@@ -1,0 +1,144 @@
+﻿@model ETicaret.Core.Entities.AppUser
+
+@{
+    ViewData["Title"] = "Yeni Kullanıcı Ekle";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Yeni Kullanıcı Ekle
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Ad *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input asp-for="Name" class="form-control" required />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SurName" class="form-label">Soyad *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input asp-for="SurName" class="form-control" required />
+                                </div>
+                                <span asp-validation-for="SurName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label">E-posta *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input asp-for="Email" class="form-control" type="email" required />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Phone" class="form-label">Telefon</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <input asp-for="Phone" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Password" class="form-label">Şifre *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input asp-for="Password" class="form-control" type="password" required />
+                                </div>
+                                <small class="form-text text-muted">En az 6 karakter olmalıdır.</small>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-at"></i>
+                                    </span>
+                                    <input asp-for="UserName" class="form-control" />
+                                </div>
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="IsActive" checked />
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        Aktif
+                                    </label>
+                                    <small class="form-text text-muted d-block">Kullanıcının sisteme giriş yapabilmesi için gerekli.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="IsAdmin" />
+                                    <label class="form-check-label" asp-for="IsAdmin">
+                                        Admin Yetkisi
+                                    </label>
+                                    <small class="form-text text-muted d-block">Admin paneline erişim için gerekli.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="IsDeletable" checked />
+                                    <label class="form-check-label" asp-for="IsDeletable">
+                                        Silinebilir
+                                    </label>
+                                    <small class="form-text text-muted d-block">Bu kullanıcının silinip silinemeyeceğini belirler.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>Kullanıcı Ekle
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>İptal Et
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

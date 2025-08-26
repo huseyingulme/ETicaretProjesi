@@ -1,0 +1,505 @@
+@model ETicaret.Core.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Sipariş Detayları";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Sipariş Detayları - @Model.OrderNumber</h1>
+        <div>
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i> Düzenle
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Geri Dön
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Sol Taraf - Sipariş Bilgileri -->
+        <div class="col-lg-8">
+            <!-- Sipariş Özeti -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-info-circle me-2"></i> Sipariş Özeti
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Sipariş Numarası:</strong></td>
+                                    <td><span class="text-primary fw-bold">@Model.OrderNumber</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sipariş Tarihi:</strong></td>
+                                    <td>@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Durum:</strong></td>
+                                    <td>
+                                        <span class="badge @GetStatusBadgeClass(Model.OrderStatus)">
+                                            @GetStatusDisplayName(Model.OrderStatus)
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Ödeme Yöntemi:</strong></td>
+                                    <td>
+                                        <span class="badge @GetPaymentMethodBadgeClass(Model.PaymentMethod)">
+                                            @GetPaymentMethodDisplayName(Model.PaymentMethod)
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ara Toplam:</strong></td>
+                                    <td><strong>@Model.TotalAmount.ToString("C")</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kargo Ücreti:</strong></td>
+                                    <td>@(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("C"))</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Genel Toplam:</strong></td>
+                                    <td><strong class="text-success">@Model.GrandTotal.ToString("C")</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Müşteri Bilgileri -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-user me-2"></i> Müşteri Bilgileri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Ad Soyad:</strong></td>
+                                    <td>@Model.Address.FullName</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Telefon:</strong></td>
+                                    <td>@Model.Address.Phone</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Adres Başlığı:</strong></td>
+                                    <td>@Model.Address.Title</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Şehir/İlçe:</strong></td>
+                                    <td>@Model.Address.City / @Model.Address.District</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Tam Adres:</strong><br>
+                            <span class="text-muted">@Model.Address.FullAddress</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sipariş Ürünleri -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-shopping-bag me-2"></i> Sipariş Ürünleri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th>Fiyat</th>
+                                    <th>Miktar</th>
+                                    <th>Toplam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="~/Img/Products/@item.ProductImage" 
+                                                     alt="@item.ProductName" 
+                                                     class="me-3" 
+                                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                                                <div>
+                                                    <strong>@item.ProductName</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@item.Price.ToString("C")</td>
+                                        <td>
+                                            <span class="badge bg-primary">@item.Quantity</span>
+                                        </td>
+                                        <td><strong>@item.TotalPrice.ToString("C")</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sipariş Notları -->
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-sticky-note me-2"></i> Sipariş Notları
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">@Model.Notes</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sağ Taraf - İşlemler -->
+        <div class="col-lg-4">
+            <!-- Durum Güncelleme -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-cogs me-2"></i> Durum Güncelleme
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateStatus" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Yeni Durum:</label>
+                            <select name="status" class="form-select">
+                                @foreach (var status in Enum.GetValues<ETicaret.Core.Entities.OrderStatus>())
+                                {
+                                    if (status != Model.OrderStatus)
+                                    {
+                                        <option value="@((int)status)">@GetStatusDisplayName(status)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sync me-1"></i> Durumu Güncelle
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Hızlı İşlemler -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-bolt me-2"></i> Hızlı İşlemler
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">
+                            <i class="fas fa-edit me-1"></i> Siparişi Düzenle
+                        </a>
+                        
+                        @if (Model.OrderStatus == ETicaret.Core.Entities.OrderStatus.Pending)
+                        {
+                            <form asp-action="UpdateStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="1" />
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-check me-1"></i> Siparişi Onayla
+                                </button>
+                            </form>
+                        }
+                        
+                        @if (Model.OrderStatus == ETicaret.Core.Entities.OrderStatus.Confirmed)
+                        {
+                            <form asp-action="UpdateStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="2" />
+                                <button type="submit" class="btn btn-info w-100">
+                                    <i class="fas fa-box me-1"></i> Hazırlamaya Başla
+                                </button>
+                            </form>
+                        }
+                        
+                        @if (Model.OrderStatus == ETicaret.Core.Entities.OrderStatus.Preparing)
+                        {
+                            <form asp-action="UpdateStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="3" />
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-shipping-fast me-1"></i> Kargoya Ver
+                                </button>
+                            </form>
+                        }
+                        
+                        @if (Model.OrderStatus == ETicaret.Core.Entities.OrderStatus.Shipped)
+                        {
+                            <form asp-action="UpdateStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="4" />
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-check-circle me-1"></i> Teslim Edildi
+                                </button>
+                            </form>
+                        }
+                        
+                        @if (Model.OrderStatus != ETicaret.Core.Entities.OrderStatus.Cancelled && Model.OrderStatus != ETicaret.Core.Entities.OrderStatus.Delivered)
+                        {
+                            <form asp-action="UpdateStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="5" />
+                                <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Bu siparişi iptal etmek istediğinizden emin misiniz?')">
+                                    <i class="fas fa-times me-1"></i> Siparişi İptal Et
+                                </button>
+                            </form>
+                        }
+                        
+                        <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-1"></i> Siparişi Sil
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sipariş Geçmişi -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-history me-2"></i> Sipariş Geçmişi
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">Sipariş Oluşturuldu</h6>
+                                <p class="timeline-text">@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                        
+                        @if (Model.OrderStatus != ETicaret.Core.Entities.OrderStatus.Pending)
+                        {
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-success"></div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Sipariş Onaylandı</h6>
+                                    <p class="timeline-text">Durum güncellendi</p>
+                                </div>
+                            </div>
+                        }
+                        
+                        @if (Model.OrderStatus == ETicaret.Core.Entities.OrderStatus.Delivered)
+                        {
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-success"></div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Teslim Edildi</h6>
+                                    <p class="timeline-text">Sipariş tamamlandı</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -35px;
+        top: 5px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+    
+    .timeline-content {
+        background: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 8px;
+        border-left: 3px solid #dee2e6;
+    }
+    
+    .timeline-title {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .timeline-text {
+        margin: 0;
+        font-size: 12px;
+        color: #6c757d;
+    }
+    
+    /* Dropdown menü düzeltmeleri */
+    .dropdown-menu {
+        z-index: 1050 !important;
+        position: absolute !important;
+        min-width: 200px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.375rem;
+    }
+    
+    .btn-group {
+        position: relative;
+    }
+    
+    .btn-group .dropdown-menu {
+        top: 100% !important;
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+    
+    /* Dropdown item'ları için hover efekti */
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    
+    .dropdown-item.text-danger:hover {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    /* Form içindeki butonlar için düzeltme */
+    .dropdown-item form {
+        margin: 0;
+    }
+    
+    .dropdown-item button {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 0.25rem 1rem;
+        color: inherit;
+    }
+    
+    .dropdown-item button:hover {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    
+    /* Responsive düzeltmeler */
+    @@media (max-width: 768px) {
+        .btn-group .dropdown-menu {
+            right: auto !important;
+            left: 0 !important;
+        }
+    }
+</style>
+
+@functions {
+    public string GetStatusBadgeClass(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "bg-warning",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "bg-info",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "bg-primary",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "bg-info",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "bg-success",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    public string GetStatusDisplayName(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "Beklemede",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "Onaylandı",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "Hazırlanıyor",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "Kargoda",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "Teslim Edildi",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "İptal Edildi",
+            _ => "Bilinmiyor"
+        };
+    }
+
+    public string GetPaymentMethodBadgeClass(ETicaret.Core.Entities.PaymentMethod paymentMethod)
+    {
+        return paymentMethod switch
+        {
+            ETicaret.Core.Entities.PaymentMethod.CreditCard => "bg-primary",
+            ETicaret.Core.Entities.PaymentMethod.DebitCard => "bg-info",
+            ETicaret.Core.Entities.PaymentMethod.CashOnDelivery => "bg-warning",
+            ETicaret.Core.Entities.PaymentMethod.BankTransfer => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+
+    public string GetPaymentMethodDisplayName(ETicaret.Core.Entities.PaymentMethod paymentMethod)
+    {
+        return paymentMethod switch
+        {
+            ETicaret.Core.Entities.PaymentMethod.CreditCard => "Kredi Kartı",
+            ETicaret.Core.Entities.PaymentMethod.DebitCard => "Banka Kartı",
+            ETicaret.Core.Entities.PaymentMethod.CashOnDelivery => "Kapıda Ödeme",
+            ETicaret.Core.Entities.PaymentMethod.BankTransfer => "Havale/EFT",
+            _ => "Bilinmiyor"
+        };
+    }
+}

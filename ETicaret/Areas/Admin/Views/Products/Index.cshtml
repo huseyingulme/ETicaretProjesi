@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ETicaret.Core.Entities.Product>
+
+@{
+    ViewData["Title"] = "Ürün Yönetimi";
+}
+
+<div class="management-header">
+    <h1 class="management-title">
+        <i class="fas fa-box me-3"></i>Ürün Yönetimi
+    </h1>
+    <p class="management-subtitle">Sitenizdeki ürünleri yönetin, stok takibi yapın ve fiyatları güncelleyin</p>
+    
+    <div class="management-stats">
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count()</span>
+            <span class="stat-label">Toplam Ürün</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(p => p.IsActive)</span>
+            <span class="stat-label">Aktif Ürün</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Count(p => p.IsHome)</span>
+            <span class="stat-label">Ana Sayfada</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">@Model.Sum(p => p.Stock)</span>
+            <span class="stat-label">Toplam Stok</span>
+        </div>
+    </div>
+</div>
+
+<div class="action-buttons">
+    <a asp-action="Create" class="btn-create">
+        <i class="fas fa-plus"></i>
+        Yeni Ürün Ekle
+    </a>
+    
+</div>
+
+<div class="management-table">
+    <table class="table" id="productsTable">
+        <thead>
+            <tr>
+                <th>Ürün Bilgileri</th>
+                <th>Görsel</th>
+                <th>Fiyat & Stok</th>
+                <th>Kategori & Marka</th>
+                <th>Durum</th>
+                <th>Sıra</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <div class="entity-header">
+                            <div class="entity-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div>
+                                <h6 class="entity-title">@item.Name</h6>
+                                <small class="text-muted">@item.ProductCode</small>
+                                @if (!string.IsNullOrEmpty(item.Description))
+                                {
+                                    <p class="entity-description">@(item.Description.Length > 80 ? item.Description.Substring(0, 80) + "..." : item.Description)</p>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="/Img/Products/@item.Image" alt="@item.Name" class="image-thumbnail" />
+                        }
+                        else
+                        {
+                            <div class="image-thumbnail bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="meta-item">
+                                <i class="fas fa-tag meta-icon"></i>
+                                <span class="fw-bold text-success">@item.Price.ToString("C")</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-boxes meta-icon"></i>
+                                <span class="@(item.Stock > 10 ? "text-success" : item.Stock > 0 ? "text-warning" : "text-danger")">
+                                    @item.Stock adet
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="meta-item">
+                                <i class="fas fa-tags meta-icon"></i>
+                                <span>@(item.Category?.Name ?? "Kategori Yok")</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-tag meta-icon"></i>
+                                <span>@(item.Brand?.Name ?? "Marka Yok")</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column gap-2">
+                            @if (item.IsActive)
+                            {
+                                <span class="status-badge status-active">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-inactive">Pasif</span>
+                            }
+                            
+                            @if (item.IsHome)
+                            {
+                                <span class="status-badge status-active">Ana Sayfa</span>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge bg-secondary">@item.OrderNo</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>
+                                Düzenle
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details">
+                                <i class="fas fa-eye"></i>
+                                Detay
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">
+                                <i class="fas fa-trash"></i>
+                                Sil
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

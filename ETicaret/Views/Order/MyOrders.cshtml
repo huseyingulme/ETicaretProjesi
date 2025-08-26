@@ -1,0 +1,418 @@
+@model ETicaret.Core.Models.OrderListViewModel
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 fw-bold text-primary">
+                <i class="fas fa-shopping-bag me-3"></i> Siparişlerim
+            </h2>
+        </div>
+    </div>
+
+    @if (Model.Orders.Any())
+    {
+        <!-- İstatistik Kartları -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shopping-bag fa-2x mb-2"></i>
+                        <h4 class="mb-0">@Model.TotalOrders</h4>
+                        <small>Toplam Sipariş</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <h4 class="mb-0">@Model.PendingOrders</h4>
+                        <small>Beklemede</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-truck fa-2x mb-2"></i>
+                        <h4 class="mb-0">@Model.ShippedOrders</h4>
+                        <small>Kargoda</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h4 class="mb-0">@Model.DeliveredOrders</h4>
+                        <small>Teslim Edildi</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sipariş Listesi -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-list me-2"></i> Sipariş Geçmişi
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="fw-bold">Sipariş No</th>
+                                        <th class="fw-bold">Tarih</th>
+                                        <th class="fw-bold">Durum</th>
+                                        <th class="fw-bold">Ödeme</th>
+                                        <th class="fw-bold">Tutar</th>
+                                        <th class="fw-bold text-center">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model.Orders)
+                                    {
+                                        <tr class="order-row" data-order-id="@order.Id">
+                                            <td>
+                                                <span class="fw-bold text-primary">@order.OrderNumber</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">@order.CreateDate.ToString("dd.MM.yyyy HH:mm")</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge @GetStatusBadgeClass(order.OrderStatus)">
+                                                    @GetStatusText(order.OrderStatus)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">@GetPaymentMethodText(order.PaymentMethod)</span>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-success">@order.GrandTotal.ToString("F2") ₺</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a href="@Url.Action("Details", new { id = order.Id })" 
+                                                       class="btn btn-outline-primary btn-sm" 
+                                                       title="Detayları Görüntüle">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    @if (order.OrderStatus == ETicaret.Core.Entities.OrderStatus.Pending)
+                                                    {
+                                                        <button type="button" 
+                                                                class="btn btn-outline-danger btn-sm cancel-order-btn" 
+                                                                data-order-id="@order.Id"
+                                                                title="Siparişi İptal Et">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Boş Durum -->
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="empty-orders">
+                    <i class="fas fa-shopping-bag fa-6x text-primary mb-4"></i>
+                    <h3 class="text-primary fw-bold mb-3">Henüz sipariş vermediniz</h3>
+                    <p class="text-muted fs-5 mb-4">Alışverişe başlamak için ürünlerimize göz atın.</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg fw-bold">
+                        <i class="fas fa-arrow-left me-2"></i> Alışverişe Başla
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Sipariş iptal etme
+            $('.cancel-order-btn').on('click', function() {
+                var orderId = $(this).data('order-id');
+                var btn = $(this);
+                
+                if (confirm('Bu siparişi iptal etmek istediğinizden emin misiniz?')) {
+                    // Loading durumu
+                    btn.prop('disabled', true);
+                    btn.html('<i class="fas fa-spinner fa-spin"></i>');
+                    
+                    $.post('@Url.Action("CancelOrder")', { id: orderId })
+                    .done(function(response) {
+                        if (response.success) {
+                            showNotification(response.message, 'success');
+                            // Sayfayı yenile
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showNotification(response.message, 'error');
+                        }
+                    })
+                    .fail(function() {
+                        showNotification('Bir hata oluştu.', 'error');
+                    })
+                    .always(function() {
+                        btn.prop('disabled', false);
+                        btn.html('<i class="fas fa-times"></i>');
+                    });
+                }
+            });
+
+            // Sipariş durumu güncelleme (otomatik)
+            setInterval(function() {
+                updateOrderStatuses();
+            }, 30000); // 30 saniyede bir kontrol et
+        });
+
+        function updateOrderStatuses() {
+            $('.order-row').each(function() {
+                var orderId = $(this).data('order-id');
+                var statusBadge = $(this).find('.badge');
+                
+                $.get('@Url.Action("GetOrderStatus")', { id: orderId })
+                .done(function(response) {
+                    if (response.success) {
+                        // Durum değişmişse güncelle
+                        var currentStatus = statusBadge.text().trim();
+                        if (currentStatus !== response.statusText) {
+                            statusBadge.removeClass().addClass('badge ' + getStatusBadgeClass(response.status));
+                            statusBadge.text(response.statusText);
+                            
+                            // Animasyon efekti
+                            statusBadge.addClass('animate__animated animate__pulse');
+                            setTimeout(() => {
+                                statusBadge.removeClass('animate__animated animate__pulse');
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        }
+
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'Pending': return 'bg-warning';
+                case 'Confirmed': return 'bg-info';
+                case 'Preparing': return 'bg-primary';
+                case 'Shipped': return 'bg-secondary';
+                case 'Delivered': return 'bg-success';
+                case 'Cancelled': return 'bg-danger';
+                case 'Returned': return 'bg-dark';
+                default: return 'bg-secondary';
+            }
+        }
+
+        function showNotification(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+}
+
+@functions {
+    string GetStatusBadgeClass(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "bg-warning",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "bg-info",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "bg-primary",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "bg-secondary",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "bg-success",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "bg-danger",
+            ETicaret.Core.Entities.OrderStatus.Returned => "bg-dark",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "Beklemede",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "Onaylandı",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "Hazırlanıyor",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "Kargoya Verildi",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "Teslim Edildi",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "İptal Edildi",
+            ETicaret.Core.Entities.OrderStatus.Returned => "İade Edildi",
+            _ => "Bilinmiyor"
+        };
+    }
+
+    string GetPaymentMethodText(ETicaret.Core.Entities.PaymentMethod method)
+    {
+        return method switch
+        {
+            ETicaret.Core.Entities.PaymentMethod.CreditCard => "Kredi Kartı",
+            ETicaret.Core.Entities.PaymentMethod.DebitCard => "Banka Kartı",
+            ETicaret.Core.Entities.PaymentMethod.CashOnDelivery => "Kapıda Ödeme",
+            ETicaret.Core.Entities.PaymentMethod.BankTransfer => "Havale/EFT",
+            ETicaret.Core.Entities.PaymentMethod.DigitalWallet => "Dijital Cüzdan",
+            _ => "Bilinmiyor"
+        };
+    }
+}
+
+<style>
+    .empty-orders {
+        padding: 80px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        margin: 40px 0;
+    }
+    
+    .order-row {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+    
+    .order-row:hover {
+        background-color: #f8f9fa;
+        border-left-color: #0d6efd;
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .card {
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        border-bottom: none;
+        padding: 20px;
+    }
+    
+    .table th {
+        border-top: none;
+        font-weight: 700;
+        color: #495057;
+        font-size: 16px;
+        padding: 20px 15px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    }
+    
+    .table td {
+        padding: 20px 15px;
+        vertical-align: middle;
+    }
+    
+    .badge {
+        font-size: 12px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    
+    .btn {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .btn-group .btn {
+        margin: 0 2px;
+    }
+    
+    .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        padding: 20px 25px;
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+        border-left: 5px solid;
+        min-width: 300px;
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.toast-success {
+        border-left-color: #28a745;
+    }
+    
+    .toast-notification.toast-error {
+        border-left-color: #dc3545;
+    }
+    
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 600;
+    }
+    
+    .toast-content i {
+        font-size: 20px;
+    }
+    
+    .toast-success .toast-content i {
+        color: #28a745;
+    }
+    
+    .toast-error .toast-content i {
+        color: #dc3545;
+    }
+    
+    .animate__animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+    
+    .animate__pulse {
+        animation-name: pulse;
+    }
+    
+    @@keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+</style>

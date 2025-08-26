@@ -1,0 +1,444 @@
+@model ETicaret.Core.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Sipariş Onayı";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 fw-bold text-primary">
+                <i class="fas fa-credit-card me-3"></i> Sipariş Onayı
+            </h2>
+        </div>
+    </div>
+
+    <form asp-action="Checkout" method="post" id="checkout-form">
+        <div class="row">
+            <!-- Sol Taraf - Sipariş Detayları -->
+            <div class="col-lg-8">
+                <!-- Adres Seçimi -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-map-marker-alt me-2"></i> Teslimat Adresi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Addresses.Any())
+                        {
+                            <div class="row">
+                                @foreach (var address in Model.Addresses)
+                                {
+                                    <div class="col-md-6 mb-3">
+                                        <div class="address-card">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" 
+                                                       name="SelectedAddressId" 
+                                                       value="@address.Id" 
+                                                       id="address_@address.Id"
+                                                       @(address.Id == Model.SelectedAddressId ? "checked" : "")>
+                                                <label class="form-check-label w-100" for="address_@address.Id">
+                                                    <div class="address-content">
+                                                        <h6 class="fw-bold text-primary mb-2">@address.Title</h6>
+                                                        <p class="mb-1"><strong>@address.FullName</strong></p>
+                                                        <p class="mb-1">@address.Phone</p>
+                                                        <p class="mb-1">@address.City / @address.District</p>
+                                                        <p class="mb-0 text-muted">@address.FullAddress</p>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="text-danger" asp-validation-for="SelectedAddressId"></div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Henüz adres eklenmemiş. 
+                                <a href="@Url.Action("Create", "Address")" class="alert-link">Adres eklemek için tıklayın</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Ödeme Yöntemi -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-credit-card me-2"></i> Ödeme Yöntemi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check payment-method">
+                                    <input class="form-check-input" type="radio" 
+                                           name="PaymentMethod" 
+                                           value="0" 
+                                           id="payment_credit"
+                                           @(Model.PaymentMethod == ETicaret.Core.Entities.PaymentMethod.CreditCard ? "checked" : "")>
+                                    <label class="form-check-label w-100" for="payment_credit">
+                                        <div class="payment-content">
+                                            <i class="fas fa-credit-card fa-2x text-primary mb-2"></i>
+                                            <h6 class="fw-bold">Kredi Kartı</h6>
+                                            <small class="text-muted">Güvenli ödeme</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check payment-method">
+                                    <input class="form-check-input" type="radio" 
+                                           name="PaymentMethod" 
+                                           value="1" 
+                                           id="payment_debit"
+                                           @(Model.PaymentMethod == ETicaret.Core.Entities.PaymentMethod.DebitCard ? "checked" : "")>
+                                    <label class="form-check-label w-100" for="payment_debit">
+                                        <div class="payment-content">
+                                            <i class="fas fa-credit-card fa-2x text-info mb-2"></i>
+                                            <h6 class="fw-bold">Banka Kartı</h6>
+                                            <small class="text-muted">Hızlı ödeme</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check payment-method">
+                                    <input class="form-check-input" type="radio" 
+                                           name="PaymentMethod" 
+                                           value="2" 
+                                           id="payment_cod"
+                                           @(Model.PaymentMethod == ETicaret.Core.Entities.PaymentMethod.CashOnDelivery ? "checked" : "")>
+                                    <label class="form-check-label w-100" for="payment_cod">
+                                        <div class="payment-content">
+                                            <i class="fas fa-money-bill-wave fa-2x text-warning mb-2"></i>
+                                            <h6 class="fw-bold">Kapıda Ödeme</h6>
+                                            <small class="text-muted">Teslimatta öde</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check payment-method">
+                                    <input class="form-check-input" type="radio" 
+                                           name="PaymentMethod" 
+                                           value="3" 
+                                           id="payment_transfer"
+                                           @(Model.PaymentMethod == ETicaret.Core.Entities.PaymentMethod.BankTransfer ? "checked" : "")>
+                                    <label class="form-check-label w-100" for="payment_transfer">
+                                        <div class="payment-content">
+                                            <i class="fas fa-university fa-2x text-secondary mb-2"></i>
+                                            <h6 class="fw-bold">Havale/EFT</h6>
+                                            <small class="text-muted">Banka transferi</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-danger" asp-validation-for="PaymentMethod"></div>
+                    </div>
+                </div>
+
+                <!-- Sipariş Notları -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-sticky-note me-2"></i> Sipariş Notları
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <textarea asp-for="Notes" class="form-control" rows="4" 
+                                      placeholder="Siparişinizle ilgili özel notlarınızı buraya yazabilirsiniz..."></textarea>
+                            <div class="text-danger" asp-validation-for="Notes"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Taraf - Sipariş Özeti -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-shopping-bag me-2"></i> Sipariş Özeti
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Ürünler -->
+                        <div class="order-items mb-4">
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <div class="order-item d-flex align-items-center mb-3">
+                                    <img src="~/Img/Products/@item.ProductImage" 
+                                         alt="@item.ProductName" 
+                                         class="order-item-image me-3"
+                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 fw-bold fs-6">@item.ProductName</h6>
+                                        <small class="text-muted">@item.Quantity adet x @item.Price.ToString("F2") ₺</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold text-primary">@item.TotalPrice.ToString("F2") ₺</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <hr>
+
+                        <!-- Fiyat Detayları -->
+                        <div class="price-details">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fs-6">Ara Toplam:</span>
+                                <span class="fw-bold">@Model.TotalAmount.ToString("F2") ₺</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fs-6">Kargo Ücreti:</span>
+                                <span class="fw-bold @(Model.ShippingCost == 0 ? "text-success" : "")">
+                                    @(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("F2") + " ₺")
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="h5 mb-0 fw-bold">Toplam:</span>
+                                <span class="h4 mb-0 text-primary fw-bold">@Model.GrandTotal.ToString("F2") ₺</span>
+                            </div>
+                        </div>
+
+                        <!-- Sipariş Onay Butonu -->
+                        <button type="submit" class="btn btn-success btn-lg w-100 mb-3 fw-bold" id="confirm-order-btn">
+                            <i class="fas fa-check-circle me-2"></i> Siparişi Onayla
+                        </button>
+
+                        <div class="text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i> 
+                                Güvenli ödeme garantisi
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Form validation
+            $('#checkout-form').on('submit', function(e) {
+                var selectedAddress = $('input[name="SelectedAddressId"]:checked').length;
+                var selectedPayment = $('input[name="PaymentMethod"]:checked').length;
+                
+                if (selectedAddress === 0) {
+                    e.preventDefault();
+                    showNotification('Lütfen bir teslimat adresi seçin.', 'error');
+                    return false;
+                }
+                
+                if (selectedPayment === 0) {
+                    e.preventDefault();
+                    showNotification('Lütfen bir ödeme yöntemi seçin.', 'error');
+                    return false;
+                }
+                
+                // Loading durumu
+                var btn = $('#confirm-order-btn');
+                btn.prop('disabled', true);
+                btn.html('<i class="fas fa-spinner fa-spin me-2"></i> Sipariş Oluşturuluyor...');
+            });
+
+            // Adres seçimi animasyonu
+            $('.address-card').on('click', function() {
+                $('.address-card').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            // Ödeme yöntemi seçimi animasyonu
+            $('.payment-method').on('click', function() {
+                $('.payment-method').removeClass('selected');
+                $(this).addClass('selected');
+            });
+        });
+
+        function showNotification(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+}
+
+<style>
+    .address-card {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .address-card:hover {
+        border-color: #0d6efd;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .address-card.selected {
+        border-color: #0d6efd;
+        background: #f8f9ff;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+    
+    .address-content {
+        padding-left: 25px;
+    }
+    
+    .payment-method {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        text-align: center;
+    }
+    
+    .payment-method:hover {
+        border-color: #28a745;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .payment-method.selected {
+        border-color: #28a745;
+        background: #f8fff9;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+    }
+    
+    .payment-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .order-item {
+        padding: 10px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .order-item:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+    }
+    
+    .order-item-image {
+        border: 2px solid #dee2e6;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    .card {
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        border-bottom: none;
+        padding: 20px;
+    }
+    
+    .btn {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        padding: 20px 25px;
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+        border-left: 5px solid;
+        min-width: 300px;
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.toast-success {
+        border-left-color: #28a745;
+    }
+    
+    .toast-notification.toast-error {
+        border-left-color: #dc3545;
+    }
+    
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 600;
+    }
+    
+    .toast-content i {
+        font-size: 20px;
+    }
+    
+    .toast-success .toast-content i {
+        color: #28a745;
+    }
+    
+    .toast-error .toast-content i {
+        color: #dc3545;
+    }
+    
+    .sticky-top {
+        position: sticky;
+        top: 20px;
+    }
+</style>

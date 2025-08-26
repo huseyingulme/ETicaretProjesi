@@ -1,0 +1,268 @@
+@model ETicaret.Core.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Sipariş Sil";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i> Sipariş Sil
+        </h1>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Geri Dön
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Dikkat!
+                </h4>
+                <p>Bu siparişi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+                <hr>
+                <p class="mb-0">
+                    <strong>Sipariş Numarası:</strong> @Model.OrderNumber<br>
+                    <strong>Müşteri:</strong> @Model.Address.FullName<br>
+                    <strong>Tutar:</strong> @Model.TotalAmount.ToString("C")
+                </p>
+            </div>
+
+            <!-- Sipariş Detayları -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-trash me-2"></i> Silinecek Sipariş Detayları
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Sipariş Bilgileri</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Sipariş No:</strong></td>
+                                    <td>@Model.OrderNumber</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tarih:</strong></td>
+                                    <td>@Model.CreateDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Durum:</strong></td>
+                                    <td>
+                                        <span class="badge @GetStatusBadgeClass(Model.OrderStatus)">
+                                            @GetStatusDisplayName(Model.OrderStatus)
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ödeme:</strong></td>
+                                    <td>
+                                        <span class="badge @GetPaymentMethodBadgeClass(Model.PaymentMethod)">
+                                            @GetPaymentMethodDisplayName(Model.PaymentMethod)
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Müşteri Bilgileri</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Ad Soyad:</strong></td>
+                                    <td>@Model.Address.FullName</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Telefon:</strong></td>
+                                    <td>@Model.Address.Phone</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Adres:</strong></td>
+                                    <td>@Model.Address.FullAddress</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Şehir:</strong></td>
+                                    <td>@Model.Address.City / @Model.Address.District</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sipariş Ürünleri -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-shopping-bag me-2"></i> Sipariş Ürünleri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th>Fiyat</th>
+                                    <th>Miktar</th>
+                                    <th>Toplam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="~/Img/Products/@item.ProductImage" 
+                                                     alt="@item.ProductName" 
+                                                     class="me-3" 
+                                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                <div>
+                                                    <strong>@item.ProductName</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@item.Price.ToString("C")</td>
+                                        <td>@item.Quantity</td>
+                                        <td><strong>@item.TotalPrice.ToString("C")</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Taraf - Onay Paneli -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Silme Onayı
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h6 class="alert-heading">Bu işlem geri alınamaz!</h6>
+                        <p class="mb-0">Sipariş silindikten sonra bu verileri geri getiremezsiniz.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Sipariş Özeti:</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Ara Toplam:</span>
+                            <span>@Model.TotalAmount.ToString("C")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Kargo Ücreti:</span>
+                            <span>@(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("C"))</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Genel Toplam:</strong>
+                            <strong class="text-primary">@Model.GrandTotal.ToString("C")</strong>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" method="post" id="deleteForm">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger" id="deleteBtn">
+                                <i class="fas fa-trash me-1"></i> Siparişi Sil
+                            </button>
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i> İptal Et
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#deleteForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                if (confirm('Bu siparişi silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz!')) {
+                    // Loading durumu
+                    $('#deleteBtn').prop('disabled', true);
+                    $('#deleteBtn').html('<i class="fas fa-spinner fa-spin me-1"></i> Siliniyor...');
+                    
+                    // Formu gönder
+                    this.submit();
+                }
+            });
+        });
+    </script>
+}
+
+@functions {
+    public string GetStatusBadgeClass(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "bg-warning",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "bg-info",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "bg-primary",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "bg-info",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "bg-success",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    public string GetStatusDisplayName(ETicaret.Core.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ETicaret.Core.Entities.OrderStatus.Pending => "Beklemede",
+            ETicaret.Core.Entities.OrderStatus.Confirmed => "Onaylandı",
+            ETicaret.Core.Entities.OrderStatus.Preparing => "Hazırlanıyor",
+            ETicaret.Core.Entities.OrderStatus.Shipped => "Kargoda",
+            ETicaret.Core.Entities.OrderStatus.Delivered => "Teslim Edildi",
+            ETicaret.Core.Entities.OrderStatus.Cancelled => "İptal Edildi",
+            _ => "Bilinmiyor"
+        };
+    }
+
+    public string GetPaymentMethodBadgeClass(ETicaret.Core.Entities.PaymentMethod paymentMethod)
+    {
+        return paymentMethod switch
+        {
+            ETicaret.Core.Entities.PaymentMethod.CreditCard => "bg-primary",
+            ETicaret.Core.Entities.PaymentMethod.DebitCard => "bg-info",
+            ETicaret.Core.Entities.PaymentMethod.CashOnDelivery => "bg-warning",
+            ETicaret.Core.Entities.PaymentMethod.BankTransfer => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+
+    public string GetPaymentMethodDisplayName(ETicaret.Core.Entities.PaymentMethod paymentMethod)
+    {
+        return paymentMethod switch
+        {
+            ETicaret.Core.Entities.PaymentMethod.CreditCard => "Kredi Kartı",
+            ETicaret.Core.Entities.PaymentMethod.DebitCard => "Banka Kartı",
+            ETicaret.Core.Entities.PaymentMethod.CashOnDelivery => "Kapıda Ödeme",
+            ETicaret.Core.Entities.PaymentMethod.BankTransfer => "Havale/EFT",
+            _ => "Bilinmiyor"
+        };
+    }
+}
